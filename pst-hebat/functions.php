@@ -37,6 +37,14 @@ function pst_hebat_setup() {
 }
 add_action('after_setup_theme', 'pst_hebat_setup');
 
+/** Disable Gutenberg editor — use classic editor */
+add_filter('use_block_editor_for_post', '__return_false', 5);
+add_filter('use_block_editor_for_post_type', '__return_false', 5);
+add_action('admin_init', function() {
+	remove_theme_support('editor-style');
+	remove_theme_support('wp-block-styles');
+});
+
 /**
  * Enqueue assets
  */
@@ -444,6 +452,29 @@ function pst_hebat_category_template($template) {
 add_filter('category_template', 'pst_hebat_category_template');
 
 /**
+ * Force single-documents-viewer.php for posts in Documents hierarchy
+ */
+function pst_hebat_single_template($template) {
+	if (is_singular('post')) {
+		$post_id = get_queried_object_id();
+		$cats = wp_get_post_categories($post_id);
+		foreach ($cats as $cat_id) {
+			$cat = get_term($cat_id, 'category');
+			while ($cat && $cat->parent) {
+				$parent = get_term($cat->parent, 'category');
+				if ($parent && $parent->slug === 'documents') {
+					$viewer = locate_template('single-documents-viewer.php');
+					if ($viewer) return $viewer;
+				}
+				$cat = $parent;
+			}
+		}
+	}
+	return $template;
+}
+add_filter('single_template', 'pst_hebat_single_template');
+
+/**
  * =============================================
  * GALLERY — Page-based image gallery
  * Upload images via meta box on a dedicated page.
@@ -719,7 +750,7 @@ function pst_hebat_render_she_trend_svg($data) {
 		return $path;
 	}
 
-	function _she_area($x_pos, $ys) {
+	function _she_area($x_pos, $ys, $bot) {
 		$n = count($ys);
 		$path = 'M' . $x_pos[0] . ',' . $ys[0];
 		for ($i = 1; $i < $n; $i++) {
@@ -727,16 +758,16 @@ function pst_hebat_render_she_trend_svg($data) {
 			$path .= ' Q' . ($x_pos[$i-1] + $cp) . ',' . $ys[$i-1]
 			       . ' ' . $x_pos[$i] . ',' . $ys[$i];
 		}
-		$path .= ' L' . $x_pos[$n-1] . ',' . $chart_bot . ' L' . $x_pos[0] . ',' . $chart_bot . 'Z';
+		$path .= ' L' . $x_pos[$n-1] . ',' . $bot . ' L' . $x_pos[0] . ',' . $bot . 'Z';
 		return $path;
 	}
 
 	$pst_line = _she_path($data['pst'], $x_positions, $pst_y);
 	$psi_line = _she_path($data['psi'], $x_positions, $psi_y);
 	$epi_line = _she_path($data['epi'], $x_positions, $epi_y);
-	$pst_area = _she_area($x_positions, $pst_y);
-	$psi_area = _she_area($x_positions, $psi_y);
-	$epi_area = _she_area($x_positions, $epi_y);
+	$pst_area = _she_area($x_positions, $pst_y, $chart_bot);
+	$psi_area = _she_area($x_positions, $psi_y, $chart_bot);
+	$epi_area = _she_area($x_positions, $epi_y, $chart_bot);
 
 	/* --- grid lines & Y labels --- */
 	$grid_vals = array(120, 100, 80, 60, 40, 20);
