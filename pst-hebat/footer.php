@@ -30,17 +30,20 @@
 
 				</div>
 
-				<!-- Categories -->
+				<!-- Categories (child of Documents) -->
 				<div>
 					<h4 class="text-xs font-semibold uppercase tracking-wider text-white mb-3">
 						<?php esc_html_e('Categories', 'pst_hebat'); ?>
 					</h4>
 					<div class="flex flex-wrap gap-x-5 gap-y-1.5 text-sm">
-						<a href="#" class="text-slate-400 hover:text-white transition no-underline">Mining</a>
-						<a href="#" class="text-slate-400 hover:text-white transition no-underline">Oil &amp; Gas</a>
-						<a href="#" class="text-slate-400 hover:text-white transition no-underline">Safety &amp; HSE</a>
-						<a href="#" class="text-slate-400 hover:text-white transition no-underline">Regulations</a>
-						<a href="#" class="text-slate-400 hover:text-white transition no-underline">Standards</a>
+						<?php
+						$doc_cat = get_category_by_slug('documents');
+						if ($doc_cat) :
+							$subcats = get_categories(array('parent' => $doc_cat->term_id, 'hide_empty' => false));
+							foreach ($subcats as $cat) :
+						?>
+						<a href="<?php echo esc_url(get_category_link($cat)); ?>" class="text-slate-400 hover:text-white transition no-underline"><?php echo esc_html($cat->name); ?></a>
+						<?php endforeach; endif; ?>
 					</div>
 				</div>
 

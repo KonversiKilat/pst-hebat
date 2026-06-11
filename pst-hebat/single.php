@@ -8,13 +8,35 @@
 get_header();
 ?>
 
-<main id="primary" class="site-single container mx-auto px-4 py-12 max-w-3xl">
+<main id="primary" class="site-single container mx-auto px-4 py-8 max-w-3xl">
 
-	<?php
-	while ( have_posts() ) :
-		the_post();
-		?>
-		<article id="post-<?php the_ID(); ?>" <?php post_class( 'single-post' ); ?>>
+	<?php while ( have_posts() ) : the_post();
+		$cats       = get_the_category();
+
+		/* Walk up category hierarchy for breadcrumb */
+		$breadcrumb = array();
+		if (!empty($cats)) {
+			$check = $cats[0];
+			while ($check && $check->parent) {
+				$par = get_term($check->parent, 'category');
+				if (!$par) break;
+				array_unshift($breadcrumb, $par);
+				$check = $par;
+			}
+		}
+	?>
+
+	<nav class="flex items-center gap-2 text-sm text-slate-500 mb-6 flex-wrap" aria-label="Breadcrumb">
+		<a href="<?php echo esc_url(home_url('/')); ?>" class="hover:text-brand-600 no-underline"><?php esc_html_e('Home', 'pst_hebat'); ?></a>
+		<?php foreach ($breadcrumb as $bc) : ?>
+		<svg class="w-3.5 h-3.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
+		<a href="<?php echo esc_url(get_category_link($bc)); ?>" class="hover:text-brand-600 no-underline"><?php echo esc_html($bc->name); ?></a>
+		<?php endforeach; ?>
+		<svg class="w-3.5 h-3.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
+		<span class="font-semibold text-slate-700"><?php the_title(); ?></span>
+	</nav>
+
+	<article id="post-<?php the_ID(); ?>" <?php post_class( 'single-post' ); ?>>
 			<?php if ( has_post_thumbnail() ) : ?>
 				<div class="entry-thumbnail mb-6">
 					<?php the_post_thumbnail( 'large', array( 'class' => 'rounded-xl w-full object-cover' ) ); ?>
