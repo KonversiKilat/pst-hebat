@@ -65,6 +65,16 @@
 		@media(max-width:768px){.hero-title{font-size:2rem!important}}
 		@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:0.01ms!important;transition-duration:0.01ms!important}}
 
+		/* Archive pagination */
+		.pagination{display:flex;justify-content:center;margin-top:2rem}
+		.pagination ul{display:flex;align-items:center;gap:6px;list-style:none;margin:0;padding:0}
+		.pagination .page-numbers{display:inline-flex;align-items:center;justify-content:center;min-width:36px;height:36px;padding:0 10px;font-size:14px;font-weight:500;color:#475569;background:#fff;border:1px solid #e2e8f0;border-radius:8px;text-decoration:none;transition:all .2s}
+		.pagination .page-numbers:hover{background:#f1f5f9;border-color:#cbd5e1;color:#1e293b}
+		.pagination .page-numbers.current{background:#2a5db0;border-color:#2a5db0;color:#fff}
+		.pagination .page-numbers.prev,.pagination .page-numbers.next{font-size:13px}
+		.pagination .page-numbers.dots{color:#94a3b8;border-color:transparent;cursor:default}
+		.pagination .page-numbers.dots:hover{background:transparent}
+
 		/* Comment form */
 		.comment-list .children{margin-left:48px;padding-left:0;list-style:none}
 		.comment-list .children .children{margin-left:32px}
