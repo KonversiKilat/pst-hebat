@@ -170,7 +170,7 @@ get_header();
 		<div class="bg-white border border-slate-200 rounded-xl p-4 sm:p-5 shadow-sm mb-5 overflow-hidden">
 			<div class="flex items-center justify-between mb-4">
 				<h3 class="text-sm font-semibold text-slate-700"><?php esc_html_e('Galeri Kegiatan', 'pst_hebat'); ?></h3>
-				<a href="#" class="text-xs text-brand-600 hover:text-brand-700 font-medium no-underline"><?php esc_html_e('Lihat semua', 'pst_hebat'); ?> &rarr;</a>
+				<a href="<?php echo esc_url(get_permalink(get_page_by_path('gallery'))); ?>" class="text-xs text-brand-600 hover:text-brand-700 font-medium no-underline"><?php esc_html_e('Lihat semua', 'pst_hebat'); ?> &rarr;</a>
 			</div>
 			<?php
 			$gallery_images = pst_hebat_get_gallery_images(6);

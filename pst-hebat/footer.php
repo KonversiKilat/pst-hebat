@@ -9,7 +9,7 @@
 	<!-- ===== FOOTER ===== -->
 	<footer class="bg-slate-900 text-slate-300 border-t border-slate-800">
 		<div class="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-			<div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
+			<div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
 				<!-- Brand -->
 				<div class="lg:col-span-1">
 					<div class="flex items-center gap-2.5 mb-3">
@@ -27,16 +27,7 @@
 					<p class="text-sm text-slate-400 leading-relaxed max-w-xs">
 						<?php echo esc_html(get_theme_mod('footer_description', 'Mining document library — technical reports, standards, regulations, and safety guidelines for the mining and energy industry.')); ?>
 					</p>
-					<div class="flex items-center gap-4 mt-4">
-						<span class="flex items-center gap-1.5 text-xs text-slate-500">
-							<span class="w-2 h-2 rounded-full bg-emerald-500"></span>
-							<?php esc_html_e('Updated weekly', 'pst_hebat'); ?>
-						</span>
-						<span class="flex items-center gap-1.5 text-xs text-slate-500">
-							<span class="w-2 h-2 rounded-full bg-navy-500"></span>
-							<span id="footer-doc-count"><?php esc_html_e('24 documents', 'pst_hebat'); ?></span>
-						</span>
-					</div>
+
 				</div>
 
 				<!-- Categories -->
@@ -71,34 +62,7 @@
 					<?php endif; ?>
 				</div>
 
-				<!-- Stats & Info -->
-				<div>
-					<h4 class="text-xs font-semibold uppercase tracking-wider text-white mb-3">
-						<?php esc_html_e('Library Stats', 'pst_hebat'); ?>
-					</h4>
-					<?php if (is_active_sidebar('footer-2')) : ?>
-						<?php dynamic_sidebar('footer-2'); ?>
-					<?php else : ?>
-					<div class="space-y-3">
-						<div class="flex items-center justify-between text-sm">
-							<span class="text-slate-400"><?php esc_html_e('Total Documents', 'pst_hebat'); ?></span>
-							<span class="font-semibold text-white" id="stats-total">24</span>
-						</div>
-						<div class="flex items-center justify-between text-sm">
-							<span class="text-slate-400"><?php esc_html_e('Categories', 'pst_hebat'); ?></span>
-							<span class="font-semibold text-white">5</span>
-						</div>
-						<div class="flex items-center justify-between text-sm">
-							<span class="text-slate-400"><?php esc_html_e('Last Updated', 'pst_hebat'); ?></span>
-							<span class="font-semibold text-white">Jun 2026</span>
-						</div>
-						<div class="flex items-center justify-between text-sm">
-							<span class="text-slate-400"><?php esc_html_e('Format', 'pst_hebat'); ?></span>
-							<span class="font-semibold text-white">PDF</span>
-						</div>
-					</div>
-					<?php endif; ?>
-				</div>
+
 			</div>
 		</div>
 

@@ -614,53 +614,104 @@ function pst_hebat_get_gallery_images($count = 6) {
  * PDF DOCUMENT META BOX (for Documents category)
  * =============================================
  */
+function pst_hebat_is_document_post($post = null) {
+	if (!$post) $post = get_post();
+	if (!$post) return false;
+	$doc_parent = get_category_by_slug('documents');
+	if (!$doc_parent) return false;
+	$cats = wp_get_post_categories($post->ID);
+	foreach ($cats as $cat_id) {
+		$cat = get_term($cat_id, 'category');
+		while ($cat) {
+			if ($cat->term_id === $doc_parent->term_id) return true;
+			if ($cat->parent === 0) break;
+			$cat = get_term($cat->parent, 'category');
+		}
+	}
+	return false;
+}
+
 function pst_hebat_add_pdf_meta_box() {
+	global $post;
+	if (!pst_hebat_is_document_post($post)) return;
 	add_meta_box(
 		'pst_hebat_pdf',
 		esc_html__('PDF Document', 'pst_hebat'),
 		'pst_hebat_pdf_meta_box_callback',
 		'post',
 		'side',
-		'default'
+		'high'
 	);
 }
 add_action('add_meta_boxes', 'pst_hebat_add_pdf_meta_box');
 
 function pst_hebat_pdf_meta_box_callback($post) {
 	wp_nonce_field('pst_hebat_pdf_save', 'pst_hebat_pdf_nonce');
-	$pdf_id = get_post_meta($post->ID, '_pst_hebat_pdf_id', true);
+	$pdf_id  = get_post_meta($post->ID, '_pst_hebat_pdf_id', true);
 	$pdf_url = $pdf_id ? wp_get_attachment_url($pdf_id) : '';
-	?>
+	$pdf_name = '';
+	$pdf_size = '';
+	if ($pdf_id) {
+		$pdf_name = get_the_title($pdf_id);
+		$bytes = (int) get_post_meta($pdf_id, '_wp_attachment_metadata', true);
+		if (!$bytes && $pdf_url) {
+			$head = @wp_remote_head($pdf_url, array('timeout' => 5));
+			if (!is_wp_error($head) && isset($head['headers']['content-length'])) {
+				$bytes = (int) $head['headers']['content-length'];
+			}
+		}
+		if ($bytes) {
+			$pdf_size = $bytes > 1048576 ? round($bytes / 1048576, 1) . ' MB' : round($bytes / 1024) . ' KB';
+		}
+	}
+?>
 	<div class="pdf-meta-box">
-		<p>
-			<label for="pst-hebat-pdf-upload"><?php esc_html_e('Upload PDF:', 'pst_hebat'); ?></label>
-			<input type="url" id="pst_hebat_pdf_url" name="pst_hebat_pdf_url" value="<?php echo esc_url($pdf_url); ?>" style="width:100%;margin-top:4px;" placeholder="<?php esc_attr_e('Paste PDF URL or upload', 'pst_hebat'); ?>">
-		</p>
-		<p style="margin-top:8px;">
-			<button type="button" class="button" id="pst-hebat-pdf-upload"><?php esc_html_e('Choose PDF', 'pst_hebat'); ?></button>
-		</p>
 		<?php if ($pdf_url) : ?>
-		<p><a href="<?php echo esc_url($pdf_url); ?>" target="_blank" class="button"><?php esc_html_e('View PDF', 'pst_hebat'); ?></a></p>
+		<div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:10px;margin-bottom:10px;">
+			<div class="flex items-center gap-2" style="display:flex;align-items:center;gap:8px;">
+				<svg width="20" height="24" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="1.8" style="shrink:0;"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+				<div style="min-width:0;">
+					<div style="font-size:12px;font-weight:600;color:#1e293b;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;" title="<?php echo esc_attr($pdf_name); ?>">PDF Attached</div>
+					<div style="font-size:11px;color:#94a3b8;">
+						<?php echo $pdf_size ? esc_html($pdf_size) : 'PDF'; ?>
+					</div>
+				</div>
+			</div>
+		</div>
 		<?php endif; ?>
+		<p style="margin:0 0 6px;">
+			<label style="font-size:12px;font-weight:600;display:block;margin-bottom:4px;"><?php esc_html_e('PDF File', 'pst_hebat'); ?></label>
+			<input type="url" id="pst_hebat_pdf_url" name="pst_hebat_pdf_url" value="<?php echo esc_url($pdf_url); ?>" style="width:100%;font-size:12px;padding:4px 6px;box-sizing:border-box;" placeholder="<?php esc_attr_e('Paste PDF URL or click Upload', 'pst_hebat'); ?>">
+		</p>
+		<p style="margin:0;display:flex;gap:6px;">
+			<button type="button" class="button button-primary" id="pst-hebat-pdf-upload" style="margin:0;">
+				<?php esc_html_e('Upload PDF', 'pst_hebat'); ?>
+			</button>
+			<?php if ($pdf_url) : ?>
+			<a href="<?php echo esc_url($pdf_url); ?>" target="blank" class="button" style="margin:0;text-decoration:none;">
+				<?php esc_html_e('Preview', 'pst_hebat'); ?>
+			</a>
+			<?php endif; ?>
+		</p>
+		<script>
+		(function($){
+			$('#pst-hebat-pdf-upload').on('click', function(e) {
+				e.preventDefault();
+				var frame = wp.media({
+					title: '<?php echo esc_js(__('Upload PDF', 'pst_hebat')); ?>',
+					library: { type: 'application/pdf' },
+					multiple: false
+				});
+				frame.on('select', function() {
+					var att = frame.state().get('selection').first().toJSON();
+					$('#pst_hebat_pdf_url').val(att.url);
+				});
+				frame.open();
+			});
+		})(jQuery);
+		</script>
 	</div>
-	<script>
-	(function($){
-		$('#pst-hebat-pdf-upload').on('click', function(e) {
-			e.preventDefault();
-			var frame = wp.media({
-				title: '<?php echo esc_js(__('Select PDF', 'pst_hebat')); ?>',
-				library: { type: 'application/pdf' },
-				multiple: false
-			});
-			frame.on('select', function() {
-				var attachment = frame.state().get('selection').first().toJSON();
-				$('#pst_hebat_pdf_url').val(attachment.url);
-			});
-			frame.open();
-		});
-	})(jQuery);
-	</script>
-	<?php
+<?php
 }
 
 function pst_hebat_save_pdf_meta($post_id) {
