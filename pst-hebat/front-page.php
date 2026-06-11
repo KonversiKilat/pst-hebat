@@ -18,27 +18,26 @@ get_header();
 	<aside class="hidden lg:block w-56 shrink-0 space-y-6">
 		<div>
 			<h3 class="text-xs font-semibold uppercase tracking-wider text-slate-400 mb-3">
-				<?php esc_html_e('Industry', 'pst_hebat'); ?>
+				<?php
+				$doc_parent = get_category_by_slug('documents');
+				echo $doc_parent ? esc_html($doc_parent->name) : esc_html_e('Industry', 'pst_hebat');
+				?>
 			</h3>
 			<div class="space-y-1" id="category-list">
-				<button data-cat="all" class="active-cat w-full text-left px-3 py-2 rounded-lg text-sm font-medium border border-transparent transition text-slate-700 hover:bg-slate-100">
+				<a href="<?php echo esc_url(home_url('/')); ?>" data-cat="all" class="active-cat w-full text-left px-3 py-2 rounded-lg text-sm font-medium border border-transparent transition text-slate-700 hover:bg-slate-100 no-underline block">
 					<?php esc_html_e('All Documents', 'pst_hebat'); ?>
-				</button>
-				<button data-cat="mining" class="w-full text-left px-3 py-2 rounded-lg text-sm text-slate-500 hover:text-slate-700 hover:bg-slate-100 border border-transparent transition">
-					<?php esc_html_e('Mining', 'pst_hebat'); ?>
-				</button>
-				<button data-cat="oil-gas" class="w-full text-left px-3 py-2 rounded-lg text-sm text-slate-500 hover:text-slate-700 hover:bg-slate-100 border border-transparent transition">
-					<?php esc_html_e('Oil & Gas', 'pst_hebat'); ?>
-				</button>
-				<button data-cat="safety" class="w-full text-left px-3 py-2 rounded-lg text-sm text-slate-500 hover:text-slate-700 hover:bg-slate-100 border border-transparent transition">
-					<?php esc_html_e('Safety & HSE', 'pst_hebat'); ?>
-				</button>
-				<button data-cat="regulations" class="w-full text-left px-3 py-2 rounded-lg text-sm text-slate-500 hover:text-slate-700 hover:bg-slate-100 border border-transparent transition">
-					<?php esc_html_e('Regulations', 'pst_hebat'); ?>
-				</button>
-				<button data-cat="standards" class="w-full text-left px-3 py-2 rounded-lg text-sm text-slate-500 hover:text-slate-700 hover:bg-slate-100 border border-transparent transition">
-					<?php esc_html_e('Standards', 'pst_hebat'); ?>
-				</button>
+				</a>
+				<?php
+				$industry_cats = array();
+				if ($doc_parent) {
+					$industry_cats = get_categories(array('child_of' => $doc_parent->term_id, 'hide_empty' => false));
+				}
+				foreach ($industry_cats as $cat) :
+				?>
+				<a href="<?php echo esc_url(get_category_link($cat)); ?>" data-cat="<?php echo esc_attr($cat->slug); ?>" class="w-full text-left px-3 py-2 rounded-lg text-sm text-slate-500 hover:text-slate-700 hover:bg-slate-100 border border-transparent transition no-underline block">
+					<?php echo esc_html($cat->name); ?>
+				</a>
+				<?php endforeach; ?>
 			</div>
 		</div>
 
@@ -82,65 +81,6 @@ get_header();
 			</div>
 		</div>
 
-		<div class="pt-4 border-t border-slate-200">
-			<h3 class="text-xs font-semibold uppercase tracking-wider text-slate-400 mb-3">
-				<?php esc_html_e('MEA', 'pst_hebat'); ?>
-			</h3>
-			<div class="space-y-1">
-				<a href="#" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm text-slate-500 hover:text-slate-700 hover:bg-slate-100 transition no-underline">
-					<svg class="w-3.5 h-3.5 text-slate-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-					Administrasi Lingkungan
-				</a>
-				<a href="#" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm text-slate-500 hover:text-slate-700 hover:bg-slate-100 transition no-underline">
-					<svg class="w-3.5 h-3.5 text-slate-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-					Pengelolaan &amp; Pemantauan Lingkungan
-				</a>
-				<a href="#" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm text-slate-500 hover:text-slate-700 hover:bg-slate-100 transition no-underline">
-					<svg class="w-3.5 h-3.5 text-slate-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-					Manajemen Energi
-				</a>
-				<a href="#" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm text-slate-500 hover:text-slate-700 hover:bg-slate-100 transition no-underline">
-					<svg class="w-3.5 h-3.5 text-slate-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-					Evaluasi Pengelolaan Lingkungan
-				</a>
-			</div>
-		</div>
-
-		<div class="pt-4 border-t border-slate-200">
-			<h3 class="text-xs font-semibold uppercase tracking-wider text-slate-400 mb-3">
-				<?php esc_html_e('SMKP MINERBA', 'pst_hebat'); ?>
-			</h3>
-			<div class="space-y-1">
-				<a href="#" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm text-slate-500 hover:text-slate-700 hover:bg-slate-100 transition no-underline">
-					<svg class="w-3.5 h-3.5 text-slate-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-					Kebijakan
-				</a>
-				<a href="#" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm text-slate-500 hover:text-slate-700 hover:bg-slate-100 transition no-underline">
-					<svg class="w-3.5 h-3.5 text-slate-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-					Perencanaan
-				</a>
-				<a href="#" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm text-slate-500 hover:text-slate-700 hover:bg-slate-100 transition no-underline">
-					<svg class="w-3.5 h-3.5 text-slate-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-					Organisasi dan personil
-				</a>
-				<a href="#" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm text-slate-500 hover:text-slate-700 hover:bg-slate-100 transition no-underline">
-					<svg class="w-3.5 h-3.5 text-slate-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-					Implementasi
-				</a>
-				<a href="#" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm text-slate-500 hover:text-slate-700 hover:bg-slate-100 transition no-underline">
-					<svg class="w-3.5 h-3.5 text-slate-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-					Evaluasi &amp; FU
-				</a>
-				<a href="#" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm text-slate-500 hover:text-slate-700 hover:bg-slate-100 transition no-underline">
-					<svg class="w-3.5 h-3.5 text-slate-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-					Dokumentasi
-				</a>
-				<a href="#" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm text-slate-500 hover:text-slate-700 hover:bg-slate-100 transition no-underline">
-					<svg class="w-3.5 h-3.5 text-slate-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-					Tinjauan Manajemen
-				</a>
-			</div>
-		</div>
 	</aside>
 
 	<!-- ===== MAIN CENTER ===== -->
@@ -199,100 +139,30 @@ get_header();
 			<div class="flex items-center justify-between mb-3">
 				<h3 class="text-sm font-semibold text-slate-700"><?php esc_html_e('SHE Performance Trend', 'pst_hebat'); ?></h3>
 			</div>
+			<?php $she_data = pst_hebat_get_she_trend_data(); ?>
 			<div class="flex flex-wrap items-center gap-5 mb-3 pb-3 border-b border-slate-100">
 				<div class="flex items-center gap-2">
 					<span class="w-3 h-3 rounded-full" style="background:#10b981;"></span>
 					<span class="text-xs font-semibold text-slate-700">PST</span>
-					<span class="text-xs font-bold text-slate-900">107</span>
-					<span class="text-xs text-emerald-600 font-semibold">&uarr; +7.0%</span>
+					<span class="text-xs font-bold text-slate-900"><?php echo esc_html($she_data['pst'][5]); ?></span>
+					<span class="text-xs text-emerald-600 font-semibold">&uarr; <?php echo esc_html($she_data['pst_trend']); ?></span>
 				</div>
 				<div class="flex items-center gap-2">
 					<span class="w-3 h-3 rounded-full" style="background:#0B63CE;"></span>
 					<span class="text-xs font-semibold text-slate-700">PSI</span>
-					<span class="text-xs font-bold text-slate-900">88</span>
-					<span class="text-xs text-emerald-600 font-semibold">&uarr; +12.8%</span>
+					<span class="text-xs font-bold text-slate-900"><?php echo esc_html($she_data['psi'][5]); ?></span>
+					<span class="text-xs text-emerald-600 font-semibold">&uarr; <?php echo esc_html($she_data['psi_trend']); ?></span>
 				</div>
 				<div class="flex items-center gap-2">
 					<span class="w-3 h-3 rounded-full" style="background:#0CA7B4;"></span>
 					<span class="text-xs font-semibold text-slate-700">EPI</span>
-					<span class="text-xs font-bold text-slate-900">92</span>
-					<span class="text-xs text-emerald-600 font-semibold">&uarr; +8.2%</span>
+					<span class="text-xs font-bold text-slate-900"><?php echo esc_html($she_data['epi'][5]); ?></span>
+					<span class="text-xs text-emerald-600 font-semibold">&uarr; <?php echo esc_html($she_data['epi_trend']); ?></span>
 				</div>
-				<span class="text-xs text-slate-400 ml-auto"><?php esc_html_e('Jan - Jun 2026', 'pst_hebat'); ?></span>
+				<span class="text-xs text-slate-400 ml-auto"><?php echo esc_html($she_data['months'][0] . ' - ' . $she_data['months'][5] . ' ' . date('Y')); ?></span>
 			</div>
 			<div class="relative">
-				<svg class="w-full" viewBox="0 0 700 250" preserveAspectRatio="none" style="height:210px;" aria-label="<?php esc_attr_e('SHE Performance Trend Chart', 'pst_hebat'); ?>">
-					<defs>
-						<linearGradient id="pstGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#10b981" stop-opacity="0.25"/><stop offset="100%" stop-color="#10b981" stop-opacity="0"/></linearGradient>
-						<linearGradient id="psiGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#0B63CE" stop-opacity="0.2"/><stop offset="100%" stop-color="#0B63CE" stop-opacity="0"/></linearGradient>
-						<linearGradient id="epiGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#0CA7B4" stop-opacity="0.2"/><stop offset="100%" stop-color="#0CA7B4" stop-opacity="0"/></linearGradient>
-					</defs>
-					<rect x="55" y="5" width="635" height="215" fill="#F5F8FC" rx="4"/>
-					<line x1="55" y1="40" x2="690" y2="40" stroke="#e2e8f0" stroke-width="0.5"/>
-					<line x1="55" y1="75" x2="690" y2="75" stroke="#e2e8f0" stroke-width="0.5"/>
-					<line x1="55" y1="110" x2="690" y2="110" stroke="#e2e8f0" stroke-width="0.5"/>
-					<line x1="55" y1="145" x2="690" y2="145" stroke="#e2e8f0" stroke-width="0.5"/>
-					<line x1="55" y1="180" x2="690" y2="180" stroke="#e2e8f0" stroke-width="0.5"/>
-					<line x1="55" y1="215" x2="690" y2="215" stroke="#cbd5e1" stroke-width="0.5"/>
-					<text x="47" y="44" text-anchor="end" fill="#64748b" font-size="9">120</text>
-					<text x="47" y="79" text-anchor="end" fill="#64748b" font-size="9">100</text>
-					<text x="47" y="114" text-anchor="end" fill="#64748b" font-size="9">80</text>
-					<text x="47" y="149" text-anchor="end" fill="#64748b" font-size="9">60</text>
-					<text x="47" y="184" text-anchor="end" fill="#64748b" font-size="9">40</text>
-					<text x="47" y="219" text-anchor="end" fill="#64748b" font-size="9">20</text>
-					<!-- PSI -->
-					<path d="M90,88 Q145,86 200,84 Q255,81 310,79 Q365,75 420,72 Q475,70 530,68 Q585,66 640,64 L640,220 L90,220Z" fill="url(#psiGrad)"/>
-					<path d="M90,88 Q145,86 200,84 Q255,81 310,79 Q365,75 420,72 Q475,70 530,68 Q585,66 640,64" fill="none" stroke="#0B63CE" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-					<circle cx="90" cy="88" r="5" fill="#0B63CE" stroke="#fff" stroke-width="2"/>
-					<circle cx="200" cy="84" r="5" fill="#0B63CE" stroke="#fff" stroke-width="2"/>
-					<circle cx="310" cy="79" r="5" fill="#0B63CE" stroke="#fff" stroke-width="2"/>
-					<circle cx="420" cy="72" r="5" fill="#0B63CE" stroke="#fff" stroke-width="2"/>
-					<circle cx="530" cy="68" r="5" fill="#0B63CE" stroke="#fff" stroke-width="2"/>
-					<circle cx="640" cy="64" r="6" fill="#0B63CE" stroke="#fff" stroke-width="2.5"/>
-					<text x="90" y="82" text-anchor="middle" fill="#0B63CE" font-size="8" font-weight="700">78</text>
-					<text x="200" y="78" text-anchor="middle" fill="#0B63CE" font-size="8" font-weight="700">80</text>
-					<text x="310" y="73" text-anchor="middle" fill="#0B63CE" font-size="8" font-weight="700">82</text>
-					<text x="420" y="66" text-anchor="middle" fill="#0B63CE" font-size="8" font-weight="700">85</text>
-					<text x="530" y="62" text-anchor="middle" fill="#0B63CE" font-size="8" font-weight="700">86</text>
-					<text x="640" y="58" text-anchor="middle" fill="#fff" font-size="9" font-weight="800">88</text>
-					<!-- EPI -->
-					<path d="M90,72 Q145,71 200,70 Q255,68 310,67 Q365,64 420,62 Q475,60 530,58 Q585,56 640,55 L640,220 L90,220Z" fill="url(#epiGrad)"/>
-					<path d="M90,72 Q145,71 200,70 Q255,68 310,67 Q365,64 420,62 Q475,60 530,58 Q585,56 640,55" fill="none" stroke="#0CA7B4" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-					<circle cx="90" cy="72" r="5" fill="#0CA7B4" stroke="#fff" stroke-width="2"/>
-					<circle cx="200" cy="70" r="5" fill="#0CA7B4" stroke="#fff" stroke-width="2"/>
-					<circle cx="310" cy="67" r="5" fill="#0CA7B4" stroke="#fff" stroke-width="2"/>
-					<circle cx="420" cy="62" r="5" fill="#0CA7B4" stroke="#fff" stroke-width="2"/>
-					<circle cx="530" cy="58" r="5" fill="#0CA7B4" stroke="#fff" stroke-width="2"/>
-					<circle cx="640" cy="55" r="6" fill="#0CA7B4" stroke="#fff" stroke-width="2.5"/>
-					<text x="90" y="66" text-anchor="middle" fill="#0CA7B4" font-size="8" font-weight="700">85</text>
-					<text x="200" y="64" text-anchor="middle" fill="#0CA7B4" font-size="8" font-weight="700">86</text>
-					<text x="310" y="61" text-anchor="middle" fill="#0CA7B4" font-size="8" font-weight="700">87</text>
-					<text x="420" y="56" text-anchor="middle" fill="#0CA7B4" font-size="8" font-weight="700">89</text>
-					<text x="530" y="52" text-anchor="middle" fill="#0CA7B4" font-size="8" font-weight="700">91</text>
-					<text x="640" y="49" text-anchor="middle" fill="#fff" font-size="9" font-weight="800">92</text>
-					<!-- PST -->
-					<path d="M90,48 Q145,47 200,46 Q255,44 310,43 Q365,41 420,39 Q475,38 530,36 Q585,34 640,32 L640,220 L90,220Z" fill="url(#pstGrad)"/>
-					<path d="M90,48 Q145,47 200,46 Q255,44 310,43 Q365,41 420,39 Q475,38 530,36 Q585,34 640,32" fill="none" stroke="#10b981" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
-					<circle cx="90" cy="48" r="5.5" fill="#10b981" stroke="#fff" stroke-width="2"/>
-					<circle cx="200" cy="46" r="5.5" fill="#10b981" stroke="#fff" stroke-width="2"/>
-					<circle cx="310" cy="43" r="5.5" fill="#10b981" stroke="#fff" stroke-width="2"/>
-					<circle cx="420" cy="39" r="5.5" fill="#10b981" stroke="#fff" stroke-width="2"/>
-					<circle cx="530" cy="36" r="5.5" fill="#10b981" stroke="#fff" stroke-width="2"/>
-					<circle cx="640" cy="32" r="7" fill="#10b981" stroke="#fff" stroke-width="2.5"/>
-					<text x="90" y="42" text-anchor="middle" fill="#10b981" font-size="8" font-weight="700">100</text>
-					<text x="200" y="40" text-anchor="middle" fill="#10b981" font-size="8" font-weight="700">101</text>
-					<text x="310" y="37" text-anchor="middle" fill="#10b981" font-size="8" font-weight="700">102</text>
-					<text x="420" y="33" text-anchor="middle" fill="#10b981" font-size="8" font-weight="700">104</text>
-					<text x="530" y="30" text-anchor="middle" fill="#10b981" font-size="8" font-weight="700">105</text>
-					<text x="640" y="24" text-anchor="middle" fill="#fff" font-size="10" font-weight="800">107</text>
-					<!-- X-axis -->
-					<text x="90" y="238" text-anchor="middle" fill="#475569" font-size="10" font-weight="600">Jan</text>
-					<text x="200" y="238" text-anchor="middle" fill="#475569" font-size="10" font-weight="600">Feb</text>
-					<text x="310" y="238" text-anchor="middle" fill="#475569" font-size="10" font-weight="600">Mar</text>
-					<text x="420" y="238" text-anchor="middle" fill="#475569" font-size="10" font-weight="600">Apr</text>
-					<text x="530" y="238" text-anchor="middle" fill="#475569" font-size="10" font-weight="600">May</text>
-					<text x="640" y="238" text-anchor="middle" fill="#475569" font-size="10" font-weight="600">Jun</text>
-				</svg>
+				<?php pst_hebat_render_she_trend_svg($she_data); ?>
 			</div>
 		</div>
 
@@ -302,6 +172,20 @@ get_header();
 				<h3 class="text-sm font-semibold text-slate-700"><?php esc_html_e('Galeri Kegiatan', 'pst_hebat'); ?></h3>
 				<a href="#" class="text-xs text-brand-600 hover:text-brand-700 font-medium no-underline"><?php esc_html_e('Lihat semua', 'pst_hebat'); ?> &rarr;</a>
 			</div>
+			<?php
+			$gallery_images = pst_hebat_get_gallery_images(6);
+			if (!empty($gallery_images)) : ?>
+			<div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
+				<?php foreach ($gallery_images as $img) : ?>
+				<div class="relative rounded-xl overflow-hidden group cursor-pointer">
+					<img src="<?php echo esc_url($img['url']); ?>" alt="<?php echo esc_attr($img['caption']); ?>" class="w-full h-32 sm:h-36 object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
+					<div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
+						<span class="absolute bottom-2 left-2 text-[10px] text-white font-medium"><?php echo esc_html($img['caption']); ?></span>
+					</div>
+				</div>
+				<?php endforeach; ?>
+			</div>
+			<?php else : ?>
 			<div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
 				<?php for ($i = 1; $i <= 6; $i++) :
 					$img = get_template_directory_uri() . '/assets/images/gallery/mining-ops-' . $i . '.jpg';
@@ -315,6 +199,7 @@ get_header();
 				</div>
 				<?php endfor; ?>
 			</div>
+			<?php endif; ?>
 		</div>
 
 		<!-- Articles -->

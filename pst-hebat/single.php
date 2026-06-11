@@ -15,6 +15,12 @@ get_header();
 		the_post();
 		?>
 		<article id="post-<?php the_ID(); ?>" <?php post_class( 'single-post' ); ?>>
+			<?php if ( has_post_thumbnail() ) : ?>
+				<div class="entry-thumbnail mb-6">
+					<?php the_post_thumbnail( 'large', array( 'class' => 'rounded-xl w-full object-cover' ) ); ?>
+				</div>
+			<?php endif; ?>
+
 			<header class="entry-header mb-6">
 				<h1 class="entry-title text-4xl font-bold mb-2"><?php the_title(); ?></h1>
 				<div class="entry-meta text-sm text-gray-600 flex flex-wrap gap-4">
@@ -45,12 +51,6 @@ get_header();
 					<?php endif; ?>
 				</div>
 			</header>
-
-			<?php if ( has_post_thumbnail() ) : ?>
-				<div class="entry-thumbnail mb-6">
-					<?php the_post_thumbnail( 'large', array( 'class' => 'rounded-lg w-full' ) ); ?>
-				</div>
-			<?php endif; ?>
 
 			<div class="entry-content prose max-w-none">
 				<?php

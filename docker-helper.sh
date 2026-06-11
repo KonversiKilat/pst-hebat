@@ -21,8 +21,8 @@ case "${1:-help}" in
   up)
     echo "=== Starting Docker environment ==="
     cd "$PROJECT_DIR" && docker compose up -d --build
-    echo "WordPress : http://localhost:$(docker compose port wordpress 80 2>/dev/null | cut -d: -f2 || echo 8080)"
-    echo "phpMyAdmin: http://localhost:$(docker compose port phpmyadmin 80 2>/dev/null | cut -d: -f2 || echo 8081)"
+    echo "WordPress : http://localhost:8084"
+    echo "phpMyAdmin: http://localhost:8085"
     ;;
   down)
     echo "=== Stopping Docker environment ==="
@@ -76,7 +76,7 @@ case "${1:-help}" in
     cd "$PROJECT_DIR" && docker compose exec -T wordpress wp db import "/var/www/html/wp-content/uploads/$FILE" --allow-root
     ;;
   replace-url)
-    OLD="${3:-http://localhost:8080}"
+    OLD="${3:-http://localhost:8084}"
     NEW="${4}"
     if [ -z "$NEW" ]; then
       echo "Usage: $0 replace-url <project-dir> <old-url> <new-url>"

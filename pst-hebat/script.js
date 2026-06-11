@@ -213,12 +213,16 @@
 	function init() {
 		renderGrid(documents);
 
-		// Category buttons
-		document.querySelectorAll('[data-cat]').forEach(function(btn) {
-			btn.addEventListener('click', function() {
-				var cat = btn.dataset.cat;
-				document.querySelectorAll('[data-cat]').forEach(function(b) { b.classList.remove('active-cat'); });
-				document.querySelectorAll('[data-cat="' + cat + '"]').forEach(function(b) { b.classList.add('active-cat'); });
+		// Category links — highlight active + JS filter (for homepage doc grid)
+		document.querySelectorAll('#category-list a[data-cat]').forEach(function(link) {
+			link.addEventListener('click', function(e) {
+				var cat = link.dataset.cat;
+				document.querySelectorAll('#category-list a[data-cat], #mobile-cat-list a[data-cat]').forEach(function(l) {
+					l.classList.remove('active-cat');
+				});
+				document.querySelectorAll('[data-cat="' + cat + '"]').forEach(function(l) {
+					l.classList.add('active-cat');
+				});
 				activeCat = cat;
 				viewTitle.textContent = cat === 'all' ? 'All Documents' : catLabel(cat);
 				if (activeDoc) closeDocHandler();
@@ -266,8 +270,9 @@
 		// Clone category list for mobile
 		var mobileList = $('mobile-cat-list');
 		if (mobileList) {
-			document.querySelectorAll('#category-list button[data-cat]').forEach(function(b) {
-				mobileList.appendChild(b.cloneNode(true));
+			document.querySelectorAll('#category-list a[data-cat]').forEach(function(b) {
+				var clone = b.cloneNode(true);
+				mobileList.appendChild(clone);
 			});
 		}
 	}

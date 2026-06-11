@@ -64,6 +64,17 @@
 		.delay-3{animation-delay:.3s}
 		@media(max-width:768px){.hero-title{font-size:2rem!important}}
 		@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:0.01ms!important;transition-duration:0.01ms!important}}
+
+		/* Comment form */
+		.comment-list .children{margin-left:48px;padding-left:0;list-style:none}
+		.comment-list .children .children{margin-left:32px}
+		#cancel-comment-reply-link{font-size:12px;color:#64748b;text-decoration:none}
+		#cancel-comment-reply-link:hover{color:#0B63CE}
+		.comment-notes,.logged-in-as{font-size:13px;color:#94a3b8;margin-bottom:12px}
+		.comment-notes a,.logged-in-as a{color:#0B63CE;text-decoration:none}
+		.comment-notes a:hover,.logged-in-as a:hover{text-decoration:underline}
+		.form-allowed-tags{display:none}
+		small{font-size:12px}
 	</style>
 </head>
 <body <?php body_class('antialiased min-h-screen flex flex-col bg-slate-50 text-slate-800'); ?>>
@@ -75,10 +86,12 @@
 		<div class="flex items-center justify-between h-16 md:h-20">
 			<!-- Left: PST Logo + Brand -->
 			<div class="flex items-center gap-3 md:gap-5">
-				<div class="flex items-center gap-2.5">
-					<?php if (has_custom_logo()) : ?>
-						<?php the_custom_logo(); ?>
-					<?php else : ?>
+				<a href="<?php echo esc_url(home_url('/')); ?>" class="flex items-center gap-2.5 no-underline group">
+					<?php
+					$navbar_logo_id = get_theme_mod('navbar_logo', 0);
+					if ($navbar_logo_id) :
+						echo wp_get_attachment_image($navbar_logo_id, array(48, 48), false, array('class' => 'w-9 h-9 md:w-10 md:h-10 object-contain', 'aria-label' => __('PST Logo', 'pst_hebat')));
+					else : ?>
 					<svg class="w-9 h-9 md:w-10 md:h-10" viewBox="0 0 58 52" fill="none" aria-label="PST Logo">
 						<path d="M26.7 4.5L3 47.5h18.2L35.5 20.9 26.7 4.5z" fill="#0067B1"/>
 						<path d="M39.2 9.6L23.8 47.5h18.7L55 47.2 39.2 9.6z" fill="#003E7E"/>
@@ -87,21 +100,21 @@
 					</svg>
 					<?php endif; ?>
 					<div class="leading-tight">
-						<a href="<?php echo esc_url(home_url('/')); ?>" class="text-xl md:text-2xl font-black tracking-tight text-gray-900 no-underline hover:text-brand-600 transition-colors">
-							<?php echo esc_html(get_theme_mod('pst_initials', 'PST')); ?>
-						</a>
+						<div class="text-xl md:text-2xl font-black tracking-tight text-gray-900 group-hover:text-brand-600 transition-colors">
+							<?php echo esc_html(get_theme_mod('navbar_initials', 'PST')); ?>
+						</div>
 						<div class="text-[9px] md:text-[10px] font-bold tracking-[0.3em] text-gray-500 -mt-0.5 uppercase">
-							<?php echo esc_html(get_theme_mod('pst_tagline', 'Hebat')); ?>
+							<?php echo esc_html(get_theme_mod('navbar_tagline', 'Hebat')); ?>
 						</div>
 					</div>
-				</div>
+				</a>
 				<div class="hidden sm:block h-8 w-px bg-gray-200"></div>
 				<div class="hidden sm:block">
 					<div class="text-sm md:text-base font-bold text-brand-600">
-						<?php echo esc_html(get_theme_mod('brand_full', 'PST / PST Hebat')); ?>
+						<?php echo esc_html(get_theme_mod('navbar_brand_full', 'PST / PST Hebat')); ?>
 					</div>
 					<div class="text-[11px] md:text-xs font-medium text-gray-500 tracking-tight">
-						<?php echo esc_html(get_theme_mod('brand_motto', 'Peduli · Selamat · Tanggung Jawab')); ?>
+						<?php echo esc_html(get_theme_mod('navbar_brand_motto', 'Peduli · Selamat · Tanggung Jawab')); ?>
 					</div>
 				</div>
 			</div>
@@ -137,15 +150,21 @@
 				?>
 				<?php else : ?>
 				<a href="#" class="hidden md:flex items-center gap-3 px-4 py-2 hover:bg-gray-50 rounded-xl transition-colors no-underline">
+					<?php
+					$mhu_logo_id = get_theme_mod('mhu_logo', 0);
+					if ($mhu_logo_id) :
+						echo wp_get_attachment_image($mhu_logo_id, array(48, 48), false, array('class' => 'w-9 h-9 object-contain', 'aria-hidden' => 'true'));
+					else : ?>
 					<svg class="w-9 h-9" viewBox="0 0 58 52" fill="none" aria-hidden="true">
 						<path d="M26.7 4.5L3 47.5h18.2L35.5 20.9 26.7 4.5z" fill="#0067B1"/>
 						<path d="M39.2 9.6L23.8 47.5h18.7L55 47.2 39.2 9.6z" fill="#003E7E"/>
 						<path d="M36.2 30.5l-7.8 17h13.9l10.8-.2-16.9-16.8z" fill="#10A4C4"/>
 						<path d="M25.6 30.8H10.9l-9 16.7h18.7l5-16.7z" fill="#0B79BD"/>
 					</svg>
+					<?php endif; ?>
 					<div class="leading-none">
-						<div class="text-xl font-extrabold tracking-tight text-[#1f2228]"><?php echo esc_html(get_theme_mod('mhu_initials', 'MHU')); ?></div>
-						<div class="text-[10px] font-bold text-[#374151] -mt-0.5"><?php echo esc_html(get_theme_mod('mhu_full', 'Mining Holding Indonesia')); ?></div>
+						<div class="text-xl font-extrabold tracking-tight text-[#1f2228]"><?php echo esc_html(get_theme_mod('navbar_mhu_initials', 'MHU')); ?></div>
+						<div class="text-[10px] font-bold text-[#374151] -mt-0.5"><?php echo esc_html(get_theme_mod('navbar_mhu_full', 'Mining Holding Indonesia')); ?></div>
 					</div>
 				</a>
 				<?php endif; ?>
@@ -174,15 +193,19 @@
 			?>
 			<hr class="my-2 border-gray-100">
 			<div class="flex items-center gap-3 px-4 py-2.5">
+				<?php if ($mhu_logo_id) :
+					echo wp_get_attachment_image($mhu_logo_id, array(36, 36), false, array('class' => 'w-7 h-7 shrink-0 object-contain', 'aria-hidden' => 'true'));
+				else : ?>
 				<svg class="w-7 h-7 shrink-0" viewBox="0 0 58 52" fill="none" aria-hidden="true">
 					<path d="M26.7 4.5L3 47.5h18.2L35.5 20.9 26.7 4.5z" fill="#0067B1"/>
 					<path d="M39.2 9.6L23.8 47.5h18.7L55 47.2 39.2 9.6z" fill="#003E7E"/>
 					<path d="M36.2 30.5l-7.8 17h13.9l10.8-.2-16.9-16.8z" fill="#10A4C4"/>
 					<path d="M25.6 30.8H10.9l-9 16.7h18.7l5-16.7z" fill="#0B79BD"/>
 				</svg>
+				<?php endif; ?>
 				<div>
-					<div class="font-extrabold text-gray-800"><?php echo esc_html(get_theme_mod('mhu_initials', 'MHU')); ?></div>
-					<div class="text-xs text-gray-500 -mt-0.5"><?php echo esc_html(get_theme_mod('mhu_full', 'Mining Holding Indonesia')); ?></div>
+					<div class="font-extrabold text-gray-800"><?php echo esc_html(get_theme_mod('navbar_mhu_initials', 'MHU')); ?></div>
+					<div class="text-xs text-gray-500 -mt-0.5"><?php echo esc_html(get_theme_mod('navbar_mhu_full', 'Mining Holding Indonesia')); ?></div>
 				</div>
 			</div>
 		</nav>

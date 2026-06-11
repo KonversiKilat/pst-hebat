@@ -6,7 +6,7 @@ services:
     container_name: pst-hebat
     restart: unless-stopped
     ports:
-      - "8080:80"
+      - "8084:80"
     environment:
       WORDPRESS_DB_HOST: db
       WORDPRESS_DB_USER: wordpress
@@ -34,7 +34,7 @@ services:
     container_name: pst-hebat-db
     restart: unless-stopped
     ports:
-      - "3007:3306"
+      - "3308:3306"
     environment:
       MYSQL_ROOT_PASSWORD: rootpassword
       MYSQL_DATABASE: pst_hebat_db
@@ -55,7 +55,7 @@ services:
     container_name: pst-hebat-pma
     restart: unless-stopped
     ports:
-      - "8081:80"
+      - "8085:80"
     environment:
       PMA_HOST: db
       PMA_USER: wordpress
