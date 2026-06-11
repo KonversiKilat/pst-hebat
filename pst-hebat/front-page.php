@@ -46,15 +46,20 @@ get_header();
 				<?php esc_html_e('Tags', 'pst_hebat'); ?>
 			</h3>
 			<div class="flex flex-wrap gap-1.5">
-				<span class="tag px-2 py-1 rounded text-xs bg-slate-100 text-slate-500 cursor-pointer">exploration</span>
-				<span class="tag px-2 py-1 rounded text-xs bg-slate-100 text-slate-500 cursor-pointer">drilling</span>
-				<span class="tag px-2 py-1 rounded text-xs bg-slate-100 text-slate-500 cursor-pointer">production</span>
-				<span class="tag px-2 py-1 rounded text-xs bg-slate-100 text-slate-500 cursor-pointer">refining</span>
-				<span class="tag px-2 py-1 rounded text-xs bg-slate-100 text-slate-500 cursor-pointer">geology</span>
-				<span class="tag px-2 py-1 rounded text-xs bg-slate-100 text-slate-500 cursor-pointer">offshore</span>
-				<span class="tag px-2 py-1 rounded text-xs bg-slate-100 text-slate-500 cursor-pointer">HSE</span>
-				<span class="tag px-2 py-1 rounded text-xs bg-slate-100 text-slate-500 cursor-pointer">compliance</span>
-				<span class="tag px-2 py-1 rounded text-xs bg-slate-100 text-slate-500 cursor-pointer">geotechnical</span>
+				<?php
+				$home_tags = get_tags(array('number' => 20, 'orderby' => 'count', 'order' => 'DESC'));
+				if ($home_tags) :
+					foreach ($home_tags as $tag) :
+				?>
+					<a href="<?php echo esc_url(get_tag_link($tag->term_id)); ?>" class="tag px-2 py-1 rounded text-xs bg-slate-100 text-slate-500 hover:text-slate-700 hover:bg-slate-200 cursor-pointer no-underline transition">
+						<?php echo esc_html($tag->name); ?>
+					</a>
+				<?php
+					endforeach;
+				else :
+					echo '<span class="text-xs text-slate-400">' . esc_html__('No tags yet', 'pst_hebat') . '</span>';
+				endif;
+				?>
 			</div>
 		</div>
 
