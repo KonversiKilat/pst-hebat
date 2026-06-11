@@ -9,7 +9,7 @@
 	<!-- ===== FOOTER ===== -->
 	<footer class="bg-slate-900 text-slate-300 border-t border-slate-800">
 		<div class="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-			<div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
+			<div class="grid sm:grid-cols-2 gap-8">
 				<!-- Brand -->
 				<div class="lg:col-span-1">
 					<div class="flex items-center gap-2.5 mb-3">
@@ -35,31 +35,13 @@
 					<h4 class="text-xs font-semibold uppercase tracking-wider text-white mb-3">
 						<?php esc_html_e('Categories', 'pst_hebat'); ?>
 					</h4>
-					<ul class="space-y-2 text-sm">
-						<li><a href="#" class="text-slate-400 hover:text-white transition no-underline">Mining</a></li>
-						<li><a href="#" class="text-slate-400 hover:text-white transition no-underline">Oil &amp; Gas</a></li>
-						<li><a href="#" class="text-slate-400 hover:text-white transition no-underline">Safety &amp; HSE</a></li>
-						<li><a href="#" class="text-slate-400 hover:text-white transition no-underline">Regulations</a></li>
-						<li><a href="#" class="text-slate-400 hover:text-white transition no-underline">Standards</a></li>
-					</ul>
-				</div>
-
-				<!-- Document Types -->
-				<div>
-					<h4 class="text-xs font-semibold uppercase tracking-wider text-white mb-3">
-						<?php esc_html_e('Document Types', 'pst_hebat'); ?>
-					</h4>
-					<?php if (is_active_sidebar('footer-1')) : ?>
-						<?php dynamic_sidebar('footer-1'); ?>
-					<?php else : ?>
-					<ul class="space-y-2 text-sm">
-						<li><a href="#" class="text-slate-400 hover:text-white transition no-underline">Technical Reports</a></li>
-						<li><a href="#" class="text-slate-400 hover:text-white transition no-underline">Standards &amp; Codes</a></li>
-						<li><a href="#" class="text-slate-400 hover:text-white transition no-underline">Regulations &amp; Laws</a></li>
-						<li><a href="#" class="text-slate-400 hover:text-white transition no-underline">Safety Guidelines</a></li>
-						<li><a href="#" class="text-slate-400 hover:text-white transition no-underline">Industry Handbooks</a></li>
-					</ul>
-					<?php endif; ?>
+					<div class="flex flex-wrap gap-x-5 gap-y-1.5 text-sm">
+						<a href="#" class="text-slate-400 hover:text-white transition no-underline">Mining</a>
+						<a href="#" class="text-slate-400 hover:text-white transition no-underline">Oil &amp; Gas</a>
+						<a href="#" class="text-slate-400 hover:text-white transition no-underline">Safety &amp; HSE</a>
+						<a href="#" class="text-slate-400 hover:text-white transition no-underline">Regulations</a>
+						<a href="#" class="text-slate-400 hover:text-white transition no-underline">Standards</a>
+					</div>
 				</div>
 
 

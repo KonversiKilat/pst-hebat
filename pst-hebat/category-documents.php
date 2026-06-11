@@ -12,20 +12,39 @@ get_header();
 <div class="flex-1 max-w-screen-2xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
 
 	<!-- Breadcrumb -->
-	<div class="flex items-center gap-2 text-sm text-slate-500 mb-4">
+	<nav class="flex items-center gap-2 text-sm text-slate-500 mb-4 flex-wrap" aria-label="Breadcrumb">
 		<a href="<?php echo esc_url(home_url('/')); ?>" class="hover:text-brand-600 no-underline"><?php esc_html_e('Home', 'pst_hebat'); ?></a>
-		<svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
 		<?php
 		$cat = get_queried_object();
 		$doc_parent = get_category_by_slug('documents');
-		if ($cat && $doc_parent && $cat->parent === $doc_parent->term_id) :
-			$parent_name = $doc_parent->name;
+
+		/* Build ancestor chain from current category up to Documents */
+		$ancestors = array();
+		if ($cat && $doc_parent) {
+			$check = $cat;
+			while ($check && $check->parent) {
+				$parent_term = get_term($check->parent, 'category');
+				if (!$parent_term) break;
+				if ($parent_term->term_id === $doc_parent->term_id) {
+					array_unshift($ancestors, $doc_parent);
+					break;
+				}
+				array_unshift($ancestors, $parent_term);
+				$check = $parent_term;
+			}
+		}
+
+		foreach ($ancestors as $anc) :
 		?>
-		<a href="<?php echo esc_url(get_category_link($doc_parent)); ?>" class="hover:text-brand-600 no-underline"><?php echo esc_html($parent_name); ?></a>
-		<svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
-		<?php endif; ?>
+		<svg class="w-3.5 h-3.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
+		<a href="<?php echo esc_url(get_category_link($anc)); ?>" class="hover:text-brand-600 no-underline"><?php echo esc_html($anc->name); ?></a>
+		<?php endforeach; ?>
+
+		<?php if ($cat) : ?>
+		<svg class="w-3.5 h-3.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
 		<span class="font-semibold text-slate-700"><?php single_cat_title(); ?></span>
-	</div>
+		<?php endif; ?>
+	</nav>
 
 	<!-- Header -->
 	<div class="flex items-center justify-between mb-6">
