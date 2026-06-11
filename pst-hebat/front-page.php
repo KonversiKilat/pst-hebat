@@ -41,6 +41,31 @@ get_header();
 			</div>
 		</div>
 
+		<?php
+		$sidebar_cats = array('mea' => 'MEA', 'smkp-minerba' => 'SMKP Minerba');
+		foreach ($sidebar_cats as $slug => $label) :
+			$cat = get_category_by_slug($slug);
+			if ($cat) :
+				$posts = get_posts(array('category' => $cat->term_id, 'posts_per_page' => -1, 'orderby' => 'title', 'order' => 'ASC'));
+				if ($posts) :
+		?>
+		<div class="pt-4 border-t border-slate-200">
+			<h3 class="text-xs font-semibold uppercase tracking-wider text-slate-400 mb-3"><?php echo esc_html($label); ?></h3>
+			<div class="space-y-1">
+				<?php foreach ($posts as $p) : ?>
+				<a href="<?php echo esc_url(get_permalink($p->ID)); ?>" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm text-slate-500 hover:text-slate-700 hover:bg-slate-100 transition no-underline">
+					<svg class="w-3.5 h-3.5 text-slate-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+					<?php echo esc_html(get_the_title($p->ID)); ?>
+				</a>
+				<?php endforeach; ?>
+			</div>
+		</div>
+		<?php
+				endif;
+			endif;
+		endforeach;
+		?>
+
 		<div>
 			<h3 class="text-xs font-semibold uppercase tracking-wider text-slate-400 mb-3">
 				<?php esc_html_e('Tags', 'pst_hebat'); ?>

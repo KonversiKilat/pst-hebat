@@ -49,6 +49,32 @@ while (have_posts()) : the_post();
 	$sis_total = $siblings->found_posts;
 ?>
 
+<?php
+/* Breadcrumb: walk up category hierarchy */
+$breadcrumb_ancestors = array();
+if (!empty($cats)) {
+	$check = $cats[0];
+	while ($check && $check->parent) {
+		$par = get_term($check->parent, 'category');
+		if (!$par) break;
+		array_unshift($breadcrumb_ancestors, $par);
+		$check = $par;
+	}
+}
+?>
+
+<div class="max-w-screen-2xl w-full mx-auto px-4 sm:px-6 lg:px-8 pt-6">
+	<nav class="flex items-center gap-2 text-sm text-slate-500 flex-wrap" aria-label="Breadcrumb">
+		<a href="<?php echo esc_url(home_url('/')); ?>" class="hover:text-brand-600 no-underline"><?php esc_html_e('Home', 'pst_hebat'); ?></a>
+		<?php foreach ($breadcrumb_ancestors as $bc) : ?>
+		<svg class="w-3.5 h-3.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
+		<a href="<?php echo esc_url(get_category_link($bc)); ?>" class="hover:text-brand-600 no-underline"><?php echo esc_html($bc->name); ?></a>
+		<?php endforeach; ?>
+		<svg class="w-3.5 h-3.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
+		<span class="font-semibold text-slate-700"><?php the_title(); ?></span>
+	</nav>
+</div>
+
 <div class="flex-1 flex max-w-screen-2xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 gap-6">
 
 	<!-- ===== LEFT SIDEBAR: Document List ===== -->
