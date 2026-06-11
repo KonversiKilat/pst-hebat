@@ -56,37 +56,9 @@ get_header();
 		</div>
 	</div>
 
-	<!-- Mobile: compact post list -->
+	<!-- Document Grid -->
 	<?php if (have_posts()) : ?>
-	<div class="lg:hidden mb-6">
-		<details open class="bg-white border border-slate-200 rounded-xl overflow-hidden">
-			<summary class="flex items-center justify-between px-4 py-3 cursor-pointer select-none">
-				<span class="text-sm font-semibold text-slate-700"><?php esc_html_e('Document List', 'pst_hebat'); ?></span>
-				<span class="text-xs text-slate-400"><?php echo esc_html($wp_query->found_posts); ?> <?php esc_html_e('items', 'pst_hebat'); ?></span>
-			</summary>
-			<div class="border-t border-slate-100 max-h-72 overflow-y-auto">
-				<?php
-				/* Reset loop for the list */
-				rewind_posts();
-				while (have_posts()) : the_post();
-					$p_pdf = get_post_meta(get_the_ID(), '_pst_hebat_pdf_url', true);
-			?>
-				<a href="<?php the_permalink(); ?>" class="flex items-center gap-2.5 px-4 py-2.5 border-b border-slate-50 last:border-0 hover:bg-slate-50 transition no-underline">
-					<svg class="w-4 h-4 text-red-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-					<span class="text-sm text-slate-700 truncate flex-1"><?php the_title(); ?></span>
-					<?php if ($p_pdf) : ?>
-					<svg class="w-3.5 h-3.5 text-brand-500 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-					<?php endif; ?>
-				</a>
-				<?php endwhile; ?>
-			</div>
-		</details>
-	</div>
-	<?php rewind_posts(); endif; ?>
-
-	<!-- Document Grid (desktop) -->
-	<?php if (have_posts()) : ?>
-	<div class="hidden sm:grid grid-cols-2 xl:grid-cols-3 gap-3">
+	<div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-3">
 		<?php while (have_posts()) : the_post();
 			$pdf_url = get_post_meta(get_the_ID(), '_pst_hebat_pdf_url', true);
 			$categories = get_the_category();

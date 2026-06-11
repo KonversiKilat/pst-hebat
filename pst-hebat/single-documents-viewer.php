@@ -75,6 +75,37 @@ if (!empty($cats)) {
 	</nav>
 </div>
 
+<!-- Mobile: other documents in this sub-category -->
+<?php if ($sis_total > 1) : ?>
+<div class="lg:hidden max-w-screen-2xl w-full mx-auto px-4 sm:px-6 pb-4">
+	<details class="bg-white border border-slate-200 rounded-xl overflow-hidden">
+		<summary class="flex items-center justify-between px-4 py-3 cursor-pointer select-none">
+			<span class="text-sm font-semibold text-slate-700"><?php echo $sub_cat ? esc_html($sub_cat->name) . ' ' . esc_html__('Documents', 'pst_hebat') : esc_html__('Other Documents', 'pst_hebat'); ?></span>
+			<span class="text-xs text-slate-400"><?php echo $sis_total; ?> <?php esc_html_e('items', 'pst_hebat'); ?></span>
+		</summary>
+		<div class="border-t border-slate-100 max-h-64 overflow-y-auto">
+			<?php
+			rewind_posts();
+			while ($siblings->have_posts()) : $siblings->the_post();
+				$m_id   = get_the_ID();
+				$m_url  = get_post_meta($m_id, '_pst_hebat_pdf_url', true);
+				$m_active = ($m_id === $current_id);
+		?>
+			<a href="<?php the_permalink(); ?>" class="flex items-center gap-2.5 px-4 py-2.5 border-b border-slate-50 last:border-0 transition no-underline <?php echo $m_active ? 'bg-brand-50' : 'hover:bg-slate-50'; ?>">
+				<svg class="w-4 h-4 shrink-0 <?php echo $m_active ? 'text-brand-500' : 'text-red-400'; ?>" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+				<span class="text-sm truncate flex-1 <?php echo $m_active ? 'text-brand-700 font-semibold' : 'text-slate-700'; ?>"><?php the_title(); ?></span>
+				<?php if ($m_active) : ?>
+				<span class="text-[10px] text-brand-500 font-medium shrink-0"><?php esc_html_e('current', 'pst_hebat'); ?></span>
+				<?php elseif ($m_url) : ?>
+				<svg class="w-3.5 h-3.5 text-slate-300 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+				<?php endif; ?>
+			</a>
+			<?php endwhile; wp_reset_postdata(); ?>
+		</div>
+	</details>
+</div>
+<?php endif; ?>
+
 <div class="flex-1 flex max-w-screen-2xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 gap-6">
 
 	<!-- ===== LEFT SIDEBAR: Document List ===== -->
@@ -114,12 +145,6 @@ if (!empty($cats)) {
 				<span id="viewer-title" class="text-sm font-semibold text-slate-700 truncate"><?php the_title(); ?></span>
 			</div>
 			<div class="flex items-center gap-2 shrink-0">
-				<?php if ($pdf_url) : ?>
-				<a href="<?php echo esc_url($pdf_url); ?>" target="_blank" id="download-btn" class="px-3 py-1.5 rounded-lg bg-brand-600 hover:bg-brand-700 text-white text-xs font-medium transition flex items-center gap-1.5 no-underline">
-					<svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-					<?php esc_html_e('Download', 'pst_hebat'); ?>
-				</a>
-				<?php endif; ?>
 				<button id="fullscreen-btn" class="p-1.5 rounded-lg hover:bg-slate-100 text-slate-400 transition" aria-label="<?php esc_attr_e('Fullscreen', 'pst_hebat'); ?>">
 					<svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M8 3H5a2 2 0 00-2 2v3m18 0V5a2 2 0 00-2-2h-3m0 18h3a2 2 0 002-2v-3M3 16v3a2 2 0 002 2h3"/></svg>
 				</button>
