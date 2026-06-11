@@ -52,9 +52,6 @@ get_header();
 			<h1 class="text-2xl sm:text-3xl font-bold text-slate-900"><?php single_cat_title(); ?></h1>
 			<p class="text-sm text-slate-500 mt-1">
 				<?php echo esc_html($wp_query->found_posts); ?> <?php esc_html_e('documents', 'pst_hebat'); ?>
-				<?php if ($cat && $doc_parent && $cat->parent === $doc_parent->term_id) : ?>
-				&middot; <a href="<?php echo esc_url(get_category_link($doc_parent)); ?>" class="text-brand-600 hover:text-brand-700 no-underline"><?php echo esc_html($parent_name); ?></a>
-				<?php endif; ?>
 			</p>
 		</div>
 	</div>
