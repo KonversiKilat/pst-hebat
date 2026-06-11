@@ -1,0 +1,20 @@
+/*
+Theme Name: PST Hebat
+Theme URI: https://github.com/yourusername/pst-hebat
+Author: Saarah / Riza
+Author URI: https://github.com/rizoa
+Description: Portal K3, Lingkungan & Operasional Tambang — Mining document library with Tailwind CDN, inline SVG chart, interactive document grid, and PDF viewer. Built with WPSquad boilerplate standards.
+Version: 1.0.0
+Requires at least: 6.0
+Tested up to: 6.7
+Requires PHP: 7.4
+License: GNU General Public License v2 or later
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
+Text Domain: pst_hebat
+Tags: one-column, custom-menu, featured-images, theme-options, translation-ready, tailwind, mining, document-library
+
+Catatan:
+  - All styling via Tailwind CDN (header.php) — file ini hanya metadata
+  - Ikon: SVG inline, no emoji
+  - GSAP tidak digunakan di theme ini (portal data-driven, bukan animasi landing)
+*/

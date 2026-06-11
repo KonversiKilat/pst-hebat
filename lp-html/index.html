@@ -1,0 +1,918 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PST Hebat — Portal K3, Lingkungan & Operasional Tambang</title>
+  <meta name="description" content="PST Hebat — Portal K3, Lingkungan, dan Operasional Tambang. Browse, search, and view PDF publications, standards, regulations, and technical reports.">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Inter', 'sans-serif'] },
+          colors: {
+            mog: { 50:'#f0f4f8',100:'#d9e2ec',200:'#bcc8dc',300:'#94a6c4',400:'#6a83ab',500:'#4a6185',600:'#1a2332',700:'#141c28',800:'#0e141e',900:'#080b12' },
+            brand: { 50:'#eef7ff',100:'#d9edff',200:'#bbdfff',300:'#8ccbff',400:'#55adff',500:'#2e8cff',600:'#0B63CE',700:'#0a4d9e',800:'#0e407a',900:'#113764' },
+            navy: { 400:'#4f7bc1',500:'#2a5db0',600:'#1a3d7c' },
+            amber: { 400:'#fbbf24',500:'#f59e0b' },
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    ::-webkit-scrollbar{width:6px;height:6px}
+    ::-webkit-scrollbar-track{background:#e2e8f0}
+    ::-webkit-scrollbar-thumb{background:#94a3b8;border-radius:3px}
+    ::-webkit-scrollbar-thumb:hover{background:#64748b}
+    .doc-card{transition:all .2s ease;cursor:pointer}
+    .doc-card:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,0.08);border-color:#2a5db0}
+    .active-cat{background:rgba(42,93,176,0.1);color:#2a5db0;border-color:#2a5db0!important}
+    .viewer-container embed{width:100%;height:100%}
+    .tag{transition:all .15s ease}
+    .tag:hover{background:rgba(42,93,176,0.12);color:#2a5db0}
+            .hero-search input:focus{box-shadow:0 0 0 3px rgba(42,93,176,0.25)}
+    .nav-link{position:relative;transition:color .2s}
+    .nav-link::after{content:'';position:absolute;bottom:-2px;left:0;width:0;height:2px;background:#0B63CE;transition:width .3s cubic-bezier(0.16,1,0.3,1);border-radius:1px}
+    .nav-link:hover::after{width:100%}
+    .glass{background:rgba(255,255,255,0.08);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,0.12)}
+    .gradient-text{background:linear-gradient(135deg,#0B63CE,#0CA7B4);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+    .btn-primary{transition:all .25s cubic-bezier(0.16,1,0.3,1)}
+    .btn-primary:hover{transform:translateY(-2px);box-shadow:0 12px 28px -8px rgba(11,99,206,0.4)}
+    .btn-ghost{transition:all .25s cubic-bezier(0.16,1,0.3,1)}
+    .btn-ghost:hover{background:rgba(255,255,255,0.15);transform:translateY(-2px)}
+    .badge-pulse{animation:pulse 2s infinite}
+    @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.6}}
+    .fade-in{animation:fadeUp .6s cubic-bezier(0.16,1,0.3,1) both}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+    .delay-1{animation-delay:.1s}
+    .delay-2{animation-delay:.2s}
+    .delay-3{animation-delay:.3s}
+    @media(max-width:768px){.hero-title{font-size:2rem!important}}
+    @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:0.01ms!important;transition-duration:0.01ms!important}}
+  </style>
+</head>
+<body class="antialiased min-h-screen flex flex-col bg-slate-50 text-slate-800">
+
+  <!-- ============ STICKY NAVBAR (outside hero) ============ -->
+  <header class="sticky top-0 left-0 right-0 z-50 bg-white border-b border-gray-200 shadow-sm">
+    <div class="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16 md:h-20">
+        <!-- Left: PST Logo + Brand -->
+        <div class="flex items-center gap-3 md:gap-5">
+          <div class="flex items-center gap-2.5">
+            <svg class="w-9 h-9 md:w-10 md:h-10" viewBox="0 0 58 52" fill="none">
+              <path d="M26.7 4.5L3 47.5h18.2L35.5 20.9 26.7 4.5z" fill="#0067B1"/>
+              <path d="M39.2 9.6L23.8 47.5h18.7L55 47.2 39.2 9.6z" fill="#003E7E"/>
+              <path d="M36.2 30.5l-7.8 17h13.9l10.8-.2-16.9-16.8z" fill="#10A4C4"/>
+              <path d="M25.6 30.8H10.9l-9 16.7h18.7l5-16.7z" fill="#0B79BD"/>
+            </svg>
+            <div class="leading-tight">
+              <div class="text-xl md:text-2xl font-black tracking-tight text-gray-900">PST</div>
+              <div class="text-[9px] md:text-[10px] font-bold tracking-[0.3em] text-gray-500 -mt-0.5">HEBAT</div>
+            </div>
+          </div>
+          <div class="hidden sm:block h-8 w-px bg-gray-200"></div>
+          <div class="hidden sm:block">
+            <div class="text-sm md:text-base font-bold text-brand-600">PST / PST Hebat</div>
+            <div class="text-[11px] md:text-xs font-medium text-gray-500 tracking-tight">Peduli · Selamat · Tanggung Jawab</div>
+          </div>
+        </div>
+
+        <!-- Center: Nav -->
+        <nav class="hidden lg:flex items-center gap-1">
+          <a href="#" class="nav-link px-3 py-2 text-sm font-semibold text-brand-600 rounded-lg bg-brand-50">Browse</a>
+          <a href="#" class="nav-link px-3 py-2 text-sm font-medium text-gray-600 hover:text-brand-600 rounded-lg hover:bg-brand-50/50">Categories</a>
+          <a href="#" class="nav-link px-3 py-2 text-sm font-medium text-gray-600 hover:text-brand-600 rounded-lg hover:bg-brand-50/50">Upload</a>
+        </nav>
+
+        <!-- Right: MHU (from origin.html) -->
+        <div class="flex items-center gap-2 md:gap-3">
+          <a href="#" class="hidden md:flex items-center gap-3 px-4 py-2 hover:bg-gray-50 rounded-xl transition-colors">
+            <svg class="w-9 h-9" viewBox="0 0 58 52" fill="none">
+              <path d="M26.7 4.5L3 47.5h18.2L35.5 20.9 26.7 4.5z" fill="#0067B1"/>
+              <path d="M39.2 9.6L23.8 47.5h18.7L55 47.2 39.2 9.6z" fill="#003E7E"/>
+              <path d="M36.2 30.5l-7.8 17h13.9l10.8-.2-16.9-16.8z" fill="#10A4C4"/>
+              <path d="M25.6 30.8H10.9l-9 16.7h18.7l5-16.7z" fill="#0B79BD"/>
+            </svg>
+            <div class="leading-none">
+              <div class="text-xl font-extrabold tracking-tight text-[#1f2228]">MHU</div>
+              <div class="text-[10px] font-bold text-[#374151] -mt-0.5">Mining Holding<br/>Indonesia</div>
+            </div>
+          </a>
+          <button class="lg:hidden p-2 rounded-xl hover:bg-gray-100 transition-colors" id="menuBtn">
+            <svg class="w-6 h-6 text-gray-700" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile nav -->
+  <div id="mobileMenu" class="fixed inset-0 z-40 hidden">
+    <div class="absolute inset-0 bg-black/30" id="menuOverlay"></div>
+    <div class="absolute top-0 right-0 w-72 h-full bg-white shadow-2xl p-6 pt-24">
+      <nav class="flex flex-col gap-4">
+        <a href="#" class="text-base font-semibold text-brand-600 bg-brand-50 px-4 py-2.5 rounded-xl">Browse</a>
+        <a href="#" class="text-base font-medium text-gray-700 px-4 py-2.5 rounded-xl hover:bg-brand-50/50">Categories</a>
+        <a href="#" class="text-base font-medium text-gray-700 px-4 py-2.5 rounded-xl hover:bg-brand-50/50">Upload</a>
+        <hr class="my-2 border-gray-100">
+        <a href="#" class="text-base font-medium text-gray-700 px-4 py-2.5 rounded-xl hover:bg-gray-100 flex items-center gap-3">
+          <svg class="w-7 h-7 shrink-0" viewBox="0 0 58 52" fill="none">
+            <path d="M26.7 4.5L3 47.5h18.2L35.5 20.9 26.7 4.5z" fill="#0067B1"/>
+            <path d="M39.2 9.6L23.8 47.5h18.7L55 47.2 39.2 9.6z" fill="#003E7E"/>
+            <path d="M36.2 30.5l-7.8 17h13.9l10.8-.2-16.9-16.8z" fill="#10A4C4"/>
+            <path d="M25.6 30.8H10.9l-9 16.7h18.7l5-16.7z" fill="#0B79BD"/>
+          </svg>
+          <div>
+            <div class="font-extrabold text-gray-800">MHU</div>
+            <div class="text-xs text-gray-500 -mt-0.5">Mining Holding Indonesia</div>
+          </div>
+        </a>
+      </nav>
+    </div>
+  </div>
+
+  <!-- ============ HERO (gradient + glow, like K3) ============ -->
+  <section class="relative min-h-[20vh] flex items-center pt-12 overflow-hidden text-white">
+    <!-- Background image: mining quarry -->
+    <div class="absolute inset-0" style="background:url('assets/images/hero-mining-quarry.jpg') center/cover no-repeat;"></div>
+    <!-- Dark overlay for readability -->
+    <div class="absolute inset-0 bg-gradient-to-br from-brand-950/98 via-brand-900/95 to-gray-900/95"></div>
+    <!-- Extra dark layer for depth -->
+    <div class="absolute inset-0 bg-black/40"></div>
+    <!-- Glow effect -->
+    <div class="absolute inset-0" style="background:radial-gradient(ellipse 80% 70% at 30% 30%, rgba(11,99,206,0.25), transparent 70%), radial-gradient(ellipse 60% 60% at 70% 80%, rgba(12,167,180,0.15), transparent 70%);"></div>
+    <!-- Dot pattern -->
+    <div class="absolute inset-0 opacity-[0.03]" style="background-image:radial-gradient(circle at 1px 1px,white 1px,transparent 0);background-size:40px 40px;"></div>
+    <!-- Decorative blurs -->
+    <div class="absolute top-20 right-10 w-72 h-72 rounded-full bg-brand-500/10 blur-3xl"></div>
+    <div class="absolute bottom-20 left-10 w-96 h-96 rounded-full bg-cyan-500/10 blur-3xl"></div>
+
+    <!-- Navbar inside hero (non-sticky, sits on top of bg) -->
+
+    <!-- Hero content (adopted from K3) -->
+    <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full py-20 min-h-[75vh] flex items-center">
+      <div class="grid lg:grid-cols-2 gap-12 items-center">
+        <!-- Left: Text -->
+        <div class="space-y-7 fade-in">
+          <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass text-white/90 text-sm font-medium">
+            <span class="w-2 h-2 rounded-full bg-amber-400 badge-pulse"></span>
+            Portal K3 &amp; Document Library
+          </div>
+          <h1 class="hero-title text-4xl sm:text-5xl lg:text-6xl font-black leading-[1.08] text-white tracking-tight">
+            Portal K3, Lingkungan,<br/>
+            <span class="gradient-text">dan Operasional</span><br/>
+            Tambang
+          </h1>
+          <p class="text-lg sm:text-xl text-white/70 leading-relaxed max-w-xl font-medium">
+            Mewujudkan pertambangan yang selamat, patuh<br/>
+            dan berkelanjutan.
+          </p>
+          <div class="flex flex-wrap gap-3 pt-1">
+            <a href="#browse" class="btn-primary inline-flex items-center gap-2.5 px-6 py-3.5 bg-brand-600 text-white font-bold rounded-xl shadow-lg shadow-brand-600/25">
+              <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M12 18v-6"/><path d="m9 15 3 3 3-3"/></svg>
+              Browse Documents
+              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+            </a>
+            <a href="#search" class="btn-ghost inline-flex items-center gap-2.5 px-6 py-3.5 glass text-white font-semibold rounded-xl">
+              <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+              Search Library
+            </a>
+          </div>
+
+          <!-- Search bar -->
+          <div class="hero-search max-w-lg pt-2">
+            <div class="relative">
+              <svg class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-white/40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+              <input type="text" id="hero-search-input" placeholder="Search 24 documents — technical reports, standards, regulations..." class="w-full bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl pl-12 pr-4 py-3.5 text-base text-white placeholder-white/40 focus:outline-none focus:border-brand-500/60 transition">
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: Stats cards removed per request -->
+      </div>
+    </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 3-COLUMN DASHBOARD ============ -->
+  <div class="flex-1 flex max-w-screen-2xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 gap-6">
+
+    <!-- ===== LEFT SIDEBAR ===== -->
+    <aside class="hidden lg:block w-56 shrink-0 space-y-6">
+      <div>
+        <h3 class="text-xs font-semibold uppercase tracking-wider text-slate-400 mb-3">Industry</h3>
+        <div class="space-y-1" id="category-list">
+          <button data-cat="all" class="active-cat w-full text-left px-3 py-2 rounded-lg text-sm font-medium border border-transparent transition text-slate-700 hover:bg-slate-100">All Documents</button>
+          <button data-cat="mining" class="w-full text-left px-3 py-2 rounded-lg text-sm text-slate-500 hover:text-slate-700 hover:bg-slate-100 border border-transparent transition">Mining</button>
+          <button data-cat="oil-gas" class="w-full text-left px-3 py-2 rounded-lg text-sm text-slate-500 hover:text-slate-700 hover:bg-slate-100 border border-transparent transition">Oil & Gas</button>
+          <button data-cat="safety" class="w-full text-left px-3 py-2 rounded-lg text-sm text-slate-500 hover:text-slate-700 hover:bg-slate-100 border border-transparent transition">Safety & HSE</button>
+          <button data-cat="regulations" class="w-full text-left px-3 py-2 rounded-lg text-sm text-slate-500 hover:text-slate-700 hover:bg-slate-100 border border-transparent transition">Regulations</button>
+          <button data-cat="standards" class="w-full text-left px-3 py-2 rounded-lg text-sm text-slate-500 hover:text-slate-700 hover:bg-slate-100 border border-transparent transition">Standards</button>
+        </div>
+      </div>
+      <div>
+        <h3 class="text-xs font-semibold uppercase tracking-wider text-slate-400 mb-3">Document Type</h3>
+        <div class="space-y-1">
+          <label class="flex items-center gap-2 px-3 py-1.5 text-sm text-slate-500 hover:text-slate-700 cursor-pointer"><input type="checkbox" checked class="rounded border-slate-300 text-navy-500 focus:ring-navy-500/40 w-3.5 h-3.5"> Technical Report</label>
+          <label class="flex items-center gap-2 px-3 py-1.5 text-sm text-slate-500 hover:text-slate-700 cursor-pointer"><input type="checkbox" checked class="rounded border-slate-300 text-navy-500 focus:ring-navy-500/40 w-3.5 h-3.5"> Standard</label>
+          <label class="flex items-center gap-2 px-3 py-1.5 text-sm text-slate-500 hover:text-slate-700 cursor-pointer"><input type="checkbox" checked class="rounded border-slate-300 text-navy-500 focus:ring-navy-500/40 w-3.5 h-3.5"> Regulation</label>
+          <label class="flex items-center gap-2 px-3 py-1.5 text-sm text-slate-500 hover:text-slate-700 cursor-pointer"><input type="checkbox" checked class="rounded border-slate-300 text-navy-500 focus:ring-navy-500/40 w-3.5 h-3.5"> Guideline</label>
+          <label class="flex items-center gap-2 px-3 py-1.5 text-sm text-slate-500 hover:text-slate-700 cursor-pointer"><input type="checkbox" checked class="rounded border-slate-300 text-navy-500 focus:ring-navy-500/40 w-3.5 h-3.5"> Report / Analysis</label>
+        </div>
+      </div>
+      <div>
+        <h3 class="text-xs font-semibold uppercase tracking-wider text-slate-400 mb-3">Tags</h3>
+        <div class="flex flex-wrap gap-1.5">
+          <span class="tag px-2 py-1 rounded text-xs bg-slate-100 text-slate-500 cursor-pointer">exploration</span>
+          <span class="tag px-2 py-1 rounded text-xs bg-slate-100 text-slate-500 cursor-pointer">drilling</span>
+          <span class="tag px-2 py-1 rounded text-xs bg-slate-100 text-slate-500 cursor-pointer">production</span>
+          <span class="tag px-2 py-1 rounded text-xs bg-slate-100 text-slate-500 cursor-pointer">refining</span>
+          <span class="tag px-2 py-1 rounded text-xs bg-slate-100 text-slate-500 cursor-pointer">geology</span>
+          <span class="tag px-2 py-1 rounded text-xs bg-slate-100 text-slate-500 cursor-pointer">offshore</span>
+          <span class="tag px-2 py-1 rounded text-xs bg-slate-100 text-slate-500 cursor-pointer">HSE</span>
+          <span class="tag px-2 py-1 rounded text-xs bg-slate-100 text-slate-500 cursor-pointer">compliance</span>
+          <span class="tag px-2 py-1 rounded text-xs bg-slate-100 text-slate-500 cursor-pointer">geotechnical</span>
+        </div>
+      </div>
+      <div class="pt-4 border-t border-slate-200">
+        <h3 class="text-xs font-semibold uppercase tracking-wider text-slate-400 mb-3">MEA</h3>
+        <div class="space-y-1">
+          <a href="#" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm text-slate-500 hover:text-slate-700 hover:bg-slate-100 transition">
+            <svg class="w-3.5 h-3.5 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            Administrasi Lingkungan
+          </a>
+          <a href="#" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm text-slate-500 hover:text-slate-700 hover:bg-slate-100 transition">
+            <svg class="w-3.5 h-3.5 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            Pengelolaan &amp; Pemantauan Lingkungan
+          </a>
+          <a href="#" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm text-slate-500 hover:text-slate-700 hover:bg-slate-100 transition">
+            <svg class="w-3.5 h-3.5 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            Manajemen Energi
+          </a>
+          <a href="#" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm text-slate-500 hover:text-slate-700 hover:bg-slate-100 transition">
+            <svg class="w-3.5 h-3.5 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            Evaluasi Pengelolaan Lingkungan
+          </a>
+        </div>
+      </div>
+      <div class="pt-4 border-t border-slate-200">
+        <h3 class="text-xs font-semibold uppercase tracking-wider text-slate-400 mb-3">SMKP MINERBA</h3>
+        <div class="space-y-1">
+          <a href="#" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm text-slate-500 hover:text-slate-700 hover:bg-slate-100 transition">
+            <svg class="w-3.5 h-3.5 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            Kebijakan
+          </a>
+          <a href="#" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm text-slate-500 hover:text-slate-700 hover:bg-slate-100 transition">
+            <svg class="w-3.5 h-3.5 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            Perencanaan
+          </a>
+          <a href="#" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm text-slate-500 hover:text-slate-700 hover:bg-slate-100 transition">
+            <svg class="w-3.5 h-3.5 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            Organisasi dan personil
+          </a>
+          <a href="#" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm text-slate-500 hover:text-slate-700 hover:bg-slate-100 transition">
+            <svg class="w-3.5 h-3.5 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            Implementasi
+          </a>
+          <a href="#" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm text-slate-500 hover:text-slate-700 hover:bg-slate-100 transition">
+            <svg class="w-3.5 h-3.5 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            Evaluasi &amp; FU
+          </a>
+          <a href="#" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm text-slate-500 hover:text-slate-700 hover:bg-slate-100 transition">
+            <svg class="w-3.5 h-3.5 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            Dokumentasi
+          </a>
+          <a href="#" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm text-slate-500 hover:text-slate-700 hover:bg-slate-100 transition">
+            <svg class="w-3.5 h-3.5 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            Tinjauan Manajemen
+          </a>
+        </div>
+      </div>
+    </aside>
+
+    <!-- ===== MAIN CENTER ===== -->
+    <main class="flex-1 min-w-0">
+      <div class="flex items-center justify-between mb-4">
+        <div class="flex items-center gap-2 text-sm">
+          <span id="view-title" class="font-semibold text-slate-800">All Documents</span>
+          <span id="result-count" class="text-slate-400 text-xs font-medium">(24)</span>
+        </div>
+        <select class="bg-white border border-slate-200 rounded-lg px-2 py-1.5 text-xs text-slate-500 focus:outline-none focus:ring-1 focus:ring-navy-500/40">
+          <option>Newest</option>
+          <option>Oldest</option>
+          <option>A-Z</option>
+        </select>
+      </div>
+
+      <!-- SHE Indices: PST / PSI / EPI -->
+      <div class="grid grid-cols-3 gap-3 mb-5">
+        <div class="bg-white border border-slate-200 rounded-xl p-4 shadow-sm">
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider">SHE Indeks PST</span>
+            <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+          </div>
+          <div class="text-2xl font-black text-slate-800">96.4</div>
+          <div class="flex items-center gap-1 text-xs text-emerald-600 font-semibold mt-1">
+            <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m5 12 5 5L20 7"/></svg>
+            +2.1% dari bulan lalu
+          </div>
+        </div>
+        <div class="bg-white border border-slate-200 rounded-xl p-4 shadow-sm">
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider">PSI</span>
+            <span class="w-2 h-2 rounded-full bg-blue-500"></span>
+          </div>
+          <div class="text-2xl font-black text-slate-800">87.2</div>
+          <div class="flex items-center gap-1 text-xs text-emerald-600 font-semibold mt-1">
+            <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m5 12 5 5L20 7"/></svg>
+            +5.3% bulan ini
+          </div>
+        </div>
+        <div class="bg-white border border-slate-200 rounded-xl p-4 shadow-sm">
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider">EPI</span>
+            <span class="w-2 h-2 rounded-full bg-amber-500"></span>
+          </div>
+          <div class="text-2xl font-black text-slate-800">92.8</div>
+          <div class="flex items-center gap-1 text-xs text-emerald-600 font-semibold mt-1">
+            <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m5 12 5 5L20 7"/></svg>
+            +1.8% dari bulan lalu
+          </div>
+        </div>
+      </div>
+
+      <!-- Historical Chart: SHE Trend (Line Chart) -->
+      <div class="bg-white border border-slate-200 rounded-xl p-4 sm:p-5 shadow-sm mb-5">
+        <div class="flex items-center justify-between mb-3">
+          <h3 class="text-sm font-semibold text-slate-700">SHE Performance Trend</h3>
+        </div>
+        <!-- Legend -->
+        <div class="flex flex-wrap items-center gap-5 mb-3 pb-3 border-b border-slate-100">
+          <div class="flex items-center gap-2">
+            <span class="w-3 h-3 rounded-full" style="background:#10b981;"></span>
+            <span class="text-xs font-semibold text-slate-700">PST</span>
+            <span class="text-xs font-bold text-slate-900">107</span>
+            <span class="text-xs text-emerald-600 font-semibold">&#x2191; +7.0%</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="w-3 h-3 rounded-full" style="background:#0B63CE;"></span>
+            <span class="text-xs font-semibold text-slate-700">PSI</span>
+            <span class="text-xs font-bold text-slate-900">88</span>
+            <span class="text-xs text-emerald-600 font-semibold">&#x2191; +12.8%</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="w-3 h-3 rounded-full" style="background:#0CA7B4;"></span>
+            <span class="text-xs font-semibold text-slate-700">EPI</span>
+            <span class="text-xs font-bold text-slate-900">92</span>
+            <span class="text-xs text-emerald-600 font-semibold">&#x2191; +8.2%</span>
+          </div>
+          <span class="text-xs text-slate-400 ml-auto">Jan - Jun 2026</span>
+        </div>
+        <div class="relative">
+          <svg class="w-full" viewBox="0 0 700 250" preserveAspectRatio="none" style="height:210px;">
+            <defs>
+              <linearGradient id="pstGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#10b981" stop-opacity="0.25"/><stop offset="100%" stop-color="#10b981" stop-opacity="0"/></linearGradient>
+              <linearGradient id="psiGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#0B63CE" stop-opacity="0.2"/><stop offset="100%" stop-color="#0B63CE" stop-opacity="0"/></linearGradient>
+              <linearGradient id="epiGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#0CA7B4" stop-opacity="0.2"/><stop offset="100%" stop-color="#0CA7B4" stop-opacity="0"/></linearGradient>
+            </defs>
+            <!-- Chart bg -->
+            <rect x="55" y="5" width="635" height="215" fill="#F5F8FC" rx="4"/>
+            <!-- Grid -->
+            <line x1="55" y1="40" x2="690" y2="40" stroke="#e2e8f0" stroke-width="0.5"/>
+            <line x1="55" y1="75" x2="690" y2="75" stroke="#e2e8f0" stroke-width="0.5"/>
+            <line x1="55" y1="110" x2="690" y2="110" stroke="#e2e8f0" stroke-width="0.5"/>
+            <line x1="55" y1="145" x2="690" y2="145" stroke="#e2e8f0" stroke-width="0.5"/>
+            <line x1="55" y1="180" x2="690" y2="180" stroke="#e2e8f0" stroke-width="0.5"/>
+            <line x1="55" y1="215" x2="690" y2="215" stroke="#cbd5e1" stroke-width="0.5"/>
+            <!-- Y axis -->
+            <text x="47" y="44" text-anchor="end" fill="#64748b" font-size="9">120</text>
+            <text x="47" y="79" text-anchor="end" fill="#64748b" font-size="9">100</text>
+            <text x="47" y="114" text-anchor="end" fill="#64748b" font-size="9">80</text>
+            <text x="47" y="149" text-anchor="end" fill="#64748b" font-size="9">60</text>
+            <text x="47" y="184" text-anchor="end" fill="#64748b" font-size="9">40</text>
+            <text x="47" y="219" text-anchor="end" fill="#64748b" font-size="9">20</text>
+            
+            <!-- PSI area + line (blue) -->
+            <path d="M90,88 Q145,86 200,84 Q255,81 310,79 Q365,75 420,72 Q475,70 530,68 Q585,66 640,64 L640,220 L90,220Z" fill="url(#psiGrad)"/>
+            <path d="M90,88 Q145,86 200,84 Q255,81 310,79 Q365,75 420,72 Q475,70 530,68 Q585,66 640,64" fill="none" stroke="#0B63CE" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="90" cy="88" r="5" fill="#0B63CE" stroke="#fff" stroke-width="2"/>
+            <circle cx="200" cy="84" r="5" fill="#0B63CE" stroke="#fff" stroke-width="2"/>
+            <circle cx="310" cy="79" r="5" fill="#0B63CE" stroke="#fff" stroke-width="2"/>
+            <circle cx="420" cy="72" r="5" fill="#0B63CE" stroke="#fff" stroke-width="2"/>
+            <circle cx="530" cy="68" r="5" fill="#0B63CE" stroke="#fff" stroke-width="2"/>
+            <circle cx="640" cy="64" r="6" fill="#0B63CE" stroke="#fff" stroke-width="2.5"/>
+            <!-- PSI value labels -->
+            <text x="90" y="82" text-anchor="middle" fill="#0B63CE" font-size="8" font-weight="700">78</text>
+            <text x="200" y="78" text-anchor="middle" fill="#0B63CE" font-size="8" font-weight="700">80</text>
+            <text x="310" y="73" text-anchor="middle" fill="#0B63CE" font-size="8" font-weight="700">82</text>
+            <text x="420" y="66" text-anchor="middle" fill="#0B63CE" font-size="8" font-weight="700">85</text>
+            <text x="530" y="62" text-anchor="middle" fill="#0B63CE" font-size="8" font-weight="700">86</text>
+            <text x="640" y="58" text-anchor="middle" fill="#fff" font-size="9" font-weight="800">88</text>
+
+            <!-- EPI area + line (teal) -->
+            <path d="M90,72 Q145,71 200,70 Q255,68 310,67 Q365,64 420,62 Q475,60 530,58 Q585,56 640,55 L640,220 L90,220Z" fill="url(#epiGrad)"/>
+            <path d="M90,72 Q145,71 200,70 Q255,68 310,67 Q365,64 420,62 Q475,60 530,58 Q585,56 640,55" fill="none" stroke="#0CA7B4" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="90" cy="72" r="5" fill="#0CA7B4" stroke="#fff" stroke-width="2"/>
+            <circle cx="200" cy="70" r="5" fill="#0CA7B4" stroke="#fff" stroke-width="2"/>
+            <circle cx="310" cy="67" r="5" fill="#0CA7B4" stroke="#fff" stroke-width="2"/>
+            <circle cx="420" cy="62" r="5" fill="#0CA7B4" stroke="#fff" stroke-width="2"/>
+            <circle cx="530" cy="58" r="5" fill="#0CA7B4" stroke="#fff" stroke-width="2"/>
+            <circle cx="640" cy="55" r="6" fill="#0CA7B4" stroke="#fff" stroke-width="2.5"/>
+            <!-- EPI value labels -->
+            <text x="90" y="66" text-anchor="middle" fill="#0CA7B4" font-size="8" font-weight="700">85</text>
+            <text x="200" y="64" text-anchor="middle" fill="#0CA7B4" font-size="8" font-weight="700">86</text>
+            <text x="310" y="61" text-anchor="middle" fill="#0CA7B4" font-size="8" font-weight="700">87</text>
+            <text x="420" y="56" text-anchor="middle" fill="#0CA7B4" font-size="8" font-weight="700">89</text>
+            <text x="530" y="52" text-anchor="middle" fill="#0CA7B4" font-size="8" font-weight="700">91</text>
+            <text x="640" y="49" text-anchor="middle" fill="#fff" font-size="9" font-weight="800">92</text>
+
+            <!-- PST area + line (emerald) -->
+            <path d="M90,48 Q145,47 200,46 Q255,44 310,43 Q365,41 420,39 Q475,38 530,36 Q585,34 640,32 L640,220 L90,220Z" fill="url(#pstGrad)"/>
+            <path d="M90,48 Q145,47 200,46 Q255,44 310,43 Q365,41 420,39 Q475,38 530,36 Q585,34 640,32" fill="none" stroke="#10b981" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="90" cy="48" r="5.5" fill="#10b981" stroke="#fff" stroke-width="2"/>
+            <circle cx="200" cy="46" r="5.5" fill="#10b981" stroke="#fff" stroke-width="2"/>
+            <circle cx="310" cy="43" r="5.5" fill="#10b981" stroke="#fff" stroke-width="2"/>
+            <circle cx="420" cy="39" r="5.5" fill="#10b981" stroke="#fff" stroke-width="2"/>
+            <circle cx="530" cy="36" r="5.5" fill="#10b981" stroke="#fff" stroke-width="2"/>
+            <circle cx="640" cy="32" r="7" fill="#10b981" stroke="#fff" stroke-width="2.5"/>
+            <!-- PST value labels -->
+            <text x="90" y="42" text-anchor="middle" fill="#10b981" font-size="8" font-weight="700">100</text>
+            <text x="200" y="40" text-anchor="middle" fill="#10b981" font-size="8" font-weight="700">101</text>
+            <text x="310" y="37" text-anchor="middle" fill="#10b981" font-size="8" font-weight="700">102</text>
+            <text x="420" y="33" text-anchor="middle" fill="#10b981" font-size="8" font-weight="700">104</text>
+            <text x="530" y="30" text-anchor="middle" fill="#10b981" font-size="8" font-weight="700">105</text>
+            <text x="640" y="24" text-anchor="middle" fill="#fff" font-size="10" font-weight="800">107</text>
+
+            <!-- X-axis labels -->
+            <text x="90" y="238" text-anchor="middle" fill="#475569" font-size="10" font-weight="600">Jan</text>
+            <text x="200" y="238" text-anchor="middle" fill="#475569" font-size="10" font-weight="600">Feb</text>
+            <text x="310" y="238" text-anchor="middle" fill="#475569" font-size="10" font-weight="600">Mar</text>
+            <text x="420" y="238" text-anchor="middle" fill="#475569" font-size="10" font-weight="600">Apr</text>
+            <text x="530" y="238" text-anchor="middle" fill="#475569" font-size="10" font-weight="600">May</text>
+            <text x="640" y="238" text-anchor="middle" fill="#475569" font-size="10" font-weight="600">Jun</text>
+          </svg>
+        </div>
+      </div>
+
+      <!-- Gallery: Kegiatan -->
+      <div class="bg-white border border-slate-200 rounded-xl p-4 sm:p-5 shadow-sm mb-5 overflow-hidden">
+        <div class="flex items-center justify-between mb-4">
+          <h3 class="text-sm font-semibold text-slate-700">Galeri Kegiatan</h3>
+          <a href="#" class="text-xs text-brand-600 hover:text-brand-700 font-medium">Lihat semua &rarr;</a>
+        </div>
+        <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
+          <div class="relative rounded-xl overflow-hidden group cursor-pointer">
+            <img src="assets/images/gallery/mining-ops-1.jpg" alt="Mining operation" class="w-full h-32 sm:h-36 object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
+            <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
+              <span class="absolute bottom-2 left-2 text-[10px] text-white font-medium">Operasi Tambang</span>
+            </div>
+          </div>
+          <div class="relative rounded-xl overflow-hidden group cursor-pointer">
+            <img src="assets/images/gallery/mining-ops-2.jpg" alt="Heavy equipment" class="w-full h-32 sm:h-36 object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
+            <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
+              <span class="absolute bottom-2 left-2 text-[10px] text-white font-medium">Alat Berat</span>
+            </div>
+          </div>
+          <div class="relative rounded-xl overflow-hidden group cursor-pointer">
+            <img src="assets/images/gallery/mining-ops-5.jpg" alt="Safety inspection" class="w-full h-32 sm:h-36 object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
+            <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
+              <span class="absolute bottom-2 left-2 text-[10px] text-white font-medium">Inspeksi K3</span>
+            </div>
+          </div>
+          <div class="relative rounded-xl overflow-hidden group cursor-pointer">
+            <img src="assets/images/gallery/mining-ops-6.jpg" alt="Mining site" class="w-full h-32 sm:h-36 object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
+            <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
+              <span class="absolute bottom-2 left-2 text-[10px] text-white font-medium">Site Tambang</span>
+            </div>
+          </div>
+          <div class="relative rounded-xl overflow-hidden group cursor-pointer">
+            <img src="assets/images/gallery/mining-ops-7.jpg" alt="Drilling operation" class="w-full h-32 sm:h-36 object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
+            <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
+              <span class="absolute bottom-2 left-2 text-[10px] text-white font-medium">Operasi Pengeboran</span>
+            </div>
+          </div>
+          <div class="relative rounded-xl overflow-hidden group cursor-pointer">
+            <img src="assets/images/gallery/mining-ops-8.jpg" alt="Mining landscape" class="w-full h-32 sm:h-36 object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
+            <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
+              <span class="absolute bottom-2 left-2 text-[10px] text-white font-medium">Lanskap Tambang</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Artikel -->
+      <div class="bg-white border border-slate-200 rounded-xl p-4 sm:p-5 shadow-sm mb-5">
+        <div class="flex items-center justify-between mb-4">
+          <h3 class="text-sm font-semibold text-slate-700">Artikel &amp; Informasi</h3>
+          <a href="#" class="text-xs text-brand-600 hover:text-brand-700 font-medium">Lihat semua &rarr;</a>
+        </div>
+        <div class="space-y-4">
+          <article class="group cursor-pointer">
+            <div class="flex gap-3 sm:gap-4">
+              <div class="w-20 h-20 sm:w-24 sm:h-20 rounded-lg overflow-hidden shrink-0 bg-slate-100">
+                <img src="assets/images/gallery/mining-ops-1.jpg" alt="SMKP Minerba" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
+              </div>
+              <div class="min-w-0 flex-1">
+                <h4 class="text-sm font-semibold text-slate-800 group-hover:text-brand-600 transition-colors leading-snug">Pentingnya Penerapan SMKP Minerba di Sektor Pertambangan</h4>
+                <p class="text-xs text-slate-500 mt-1 leading-relaxed line-clamp-2">Sistem Manajemen Keselamatan Pertambangan (SMKP) Minerba menjadi tulang punggung budaya K3 di perusahaan tambang. Artikel ini mengulas 7 elemen utama SMKP.</p>
+                <div class="flex items-center gap-2 mt-2 text-[10px] text-slate-400">
+                  <span class="text-brand-600 font-medium">5 menit baca</span>
+                  <span>&middot;</span>
+                  <span>12 Jun 2026</span>
+                </div>
+              </div>
+            </div>
+          </article>
+          <article class="group cursor-pointer">
+            <div class="flex gap-3 sm:gap-4">
+              <div class="w-20 h-20 sm:w-24 sm:h-20 rounded-lg overflow-hidden shrink-0 bg-slate-100">
+                <img src="assets/images/gallery/mining-ops-2.jpg" alt="SHE Indeks" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
+              </div>
+              <div class="min-w-0 flex-1">
+                <h4 class="text-sm font-semibold text-slate-800 group-hover:text-brand-600 transition-colors leading-snug">Indikator Kinerja SHE: PST, PSI, dan EPI dalam Operasional Tambang</h4>
+                <p class="text-xs text-slate-500 mt-1 leading-relaxed line-clamp-2">SHE Indeks PST, PSI, dan EPI adalah indikator utama dalam mengukur efektivitas sistem K3, lingkungan, dan energi di operasional tambang.</p>
+                <div class="flex items-center gap-2 mt-2 text-[10px] text-slate-400">
+                  <span class="text-brand-600 font-medium">4 menit baca</span>
+                  <span>&middot;</span>
+                  <span>8 Jun 2026</span>
+                </div>
+              </div>
+            </div>
+          </article>
+          <article class="group cursor-pointer">
+            <div class="flex gap-3 sm:gap-4">
+              <div class="w-20 h-20 sm:w-24 sm:h-20 rounded-lg overflow-hidden shrink-0 bg-slate-100">
+                <img src="assets/images/gallery/mining-ops-5.jpg" alt="Investigasi" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
+              </div>
+              <div class="min-w-0 flex-1">
+                <h4 class="text-sm font-semibold text-slate-800 group-hover:text-brand-600 transition-colors leading-snug">Langkah-Langkah Investigasi Kecelakaan Tambang yang Efektif</h4>
+                <p class="text-xs text-slate-500 mt-1 leading-relaxed line-clamp-2">Investigasi kecelakaan yang tepat dan menyeluruh adalah kunci pencegahan insiden serupa. Pelajari metodologi investigasi sesuai standar K3 tambang.</p>
+                <div class="flex items-center gap-2 mt-2 text-[10px] text-slate-400">
+                  <span class="text-brand-600 font-medium">6 menit baca</span>
+                  <span>&middot;</span>
+                  <span>1 Jun 2026</span>
+                </div>
+              </div>
+            </div>
+          </article>
+        </div>
+        <!-- Pagination -->
+        <div class="flex items-center justify-between mt-5 pt-4 border-t border-slate-100">
+          <span class="text-xs text-slate-400">Menampilkan 1-3 dari 12 artikel</span>
+          <div class="flex items-center gap-1">
+            <button class="w-7 h-7 rounded-md bg-brand-50 text-brand-600 text-xs font-semibold flex items-center justify-center">1</button>
+            <button class="w-7 h-7 rounded-md text-slate-500 hover:bg-slate-100 text-xs font-medium flex items-center justify-center">2</button>
+            <button class="w-7 h-7 rounded-md text-slate-500 hover:bg-slate-100 text-xs font-medium flex items-center justify-center">3</button>
+            <button class="w-7 h-7 rounded-md text-slate-500 hover:bg-slate-100 text-xs font-medium flex items-center justify-center">4</button>
+            <span class="text-slate-300 text-xs px-1">...</span>
+            <button class="w-7 h-7 rounded-md text-slate-500 hover:bg-slate-100 text-xs font-medium flex items-center justify-center">&rarr;</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Document grid -->
+      <div id="doc-grid" class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-3"></div>
+
+      <!-- PDF Viewer -->
+      <div id="pdf-viewer" class="hidden">
+        <button id="close-viewer" class="flex items-center gap-1.5 text-sm text-slate-500 hover:text-slate-800 mb-3 transition">
+          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          Back to documents
+        </button>
+        <div class="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm">
+          <div class="flex items-center justify-between px-4 py-2.5 bg-slate-50 border-b border-slate-200">
+            <div class="flex items-center gap-2">
+              <svg class="w-4 h-4 text-red-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+              <span id="viewer-filename" class="text-sm font-medium text-slate-700">document.pdf</span>
+            </div>
+            <button id="download-btn" class="px-3 py-1 rounded-md bg-navy-500 hover:bg-navy-600 text-white text-xs font-medium transition">Download</button>
+          </div>
+          <div class="viewer-container bg-slate-100" style="height:70vh;">
+            <embed id="pdf-embed" src="" type="application/pdf" class="w-full h-full">
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- ===== RIGHT SIDEBAR: Materi Links ===== -->
+    <aside class="hidden xl:block w-72 shrink-0">
+      <div class="sticky top-4 bg-white border border-slate-200 rounded-xl p-5 shadow-sm">
+        <h3 class="text-xs font-semibold uppercase tracking-wider text-slate-400 mb-4">Materi &amp; Dokumen</h3>
+        <nav class="space-y-0.5">
+          <a href="#" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm text-slate-600 hover:text-brand-600 hover:bg-brand-50 transition">
+            <svg class="w-4 h-4 text-slate-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            Materi general induksi
+          </a>
+          <a href="#" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm text-slate-600 hover:text-brand-600 hover:bg-brand-50 transition">
+            <svg class="w-4 h-4 text-slate-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            Materi LOTO
+          </a>
+          <a href="#" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm text-slate-600 hover:text-brand-600 hover:bg-brand-50 transition">
+            <svg class="w-4 h-4 text-slate-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            Materi KPLH P1
+          </a>
+          <a href="#" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm text-slate-600 hover:text-brand-600 hover:bg-brand-50 transition">
+            <svg class="w-4 h-4 text-slate-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            Materi KPLH P2
+          </a>
+          <a href="#" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm text-slate-600 hover:text-brand-600 hover:bg-brand-50 transition">
+            <svg class="w-4 h-4 text-slate-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            Materi KPLH P3
+          </a>
+          <a href="#" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm text-slate-600 hover:text-brand-600 hover:bg-brand-50 transition">
+            <svg class="w-4 h-4 text-slate-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            Materi investigasi
+          </a>
+          <a href="#" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm text-slate-600 hover:text-brand-600 hover:bg-brand-50 transition">
+            <svg class="w-4 h-4 text-slate-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            Materi ZAM
+          </a>
+          <a href="#" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm text-slate-600 hover:text-brand-600 hover:bg-brand-50 transition">
+            <svg class="w-4 h-4 text-slate-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            Materi HSE Indeks
+          </a>
+          <hr class="my-2 border-slate-100">
+          <a href="#" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm text-slate-600 hover:text-brand-600 hover:bg-brand-50 transition">
+            <svg class="w-4 h-4 text-slate-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            Materi LB3
+          </a>
+          <a href="#" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm text-slate-600 hover:text-brand-600 hover:bg-brand-50 transition">
+            <svg class="w-4 h-4 text-slate-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            IBPR
+          </a>
+          <a href="#" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm text-slate-600 hover:text-brand-600 hover:bg-brand-50 transition">
+            <svg class="w-4 h-4 text-slate-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            IADL
+          </a>
+        </nav>
+      </div>
+    </aside>
+
+    <!-- Mobile cat toggle -->
+    <aside id="mobile-cat" class="lg:hidden fixed inset-0 z-40 hidden">
+      <div class="absolute inset-0 bg-black/40" onclick="toggleMobileCat()"></div>
+      <div class="absolute left-0 top-0 bottom-0 w-64 bg-white p-6 overflow-y-auto shadow-xl">
+        <div class="flex justify-between items-center mb-6">
+          <h3 class="text-sm font-semibold text-slate-800">Categories</h3>
+          <button onclick="toggleMobileCat()" class="text-slate-400"><svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
+        </div>
+        <div id="mobile-cat-list" class="space-y-1"></div>
+      </div>
+    </aside>
+  </div>
+
+  <!-- Mobile bottom bar -->
+  <div class="lg:hidden fixed bottom-0 left-0 right-0 z-30 bg-white border-t border-slate-200 px-4 py-2 flex items-center justify-between text-xs text-slate-500">
+    <button onclick="toggleMobileCat()" class="flex items-center gap-1.5 py-1.5"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg> Categories</button>
+    <span id="mobile-total">24 documents</span>
+  </div>
+
+  <script>
+    const documents = [
+      { id:1, title:'Coal Mining Safety Guidelines 2025', author:'Ministry of Energy & Mineral Resources', pages:48, date:'2025-03-15', size:'2.4 MB', cat:'safety', type:'Guideline', desc:'Comprehensive safety guidelines for coal mining operations including hazard identification, risk assessment, and emergency response procedures.', tags:['safety','coal','mining','HSE'], pdf:'assets/sample.pdf' },
+      { id:2, title:'Offshore Drilling Technical Standards', author:'IADC', pages:124, date:'2024-11-20', size:'5.8 MB', cat:'oil-gas', type:'Standard', desc:'Technical standards and best practices for offshore drilling operations including equipment specifications, well control, and environmental protection.', tags:['drilling','offshore','standards','oil-gas'], pdf:'assets/sample.pdf' },
+      { id:3, title:'Indonesia Mining Law No.3/2020', author:'Government of Indonesia', pages:256, date:'2024-06-10', size:'3.2 MB', cat:'regulations', type:'Regulation', desc:'Full text of Law No. 3 of 2020 concerning amendments to Mining Law, covering licensing, production, and reclamation obligations.', tags:['regulation','law','mining','compliance'], pdf:'assets/sample.pdf' },
+      { id:4, title:'Geological Survey Report: Kalimantan Basin', author:'Badan Geologi', pages:186, date:'2024-09-05', size:'12.1 MB', cat:'mining', type:'Technical Report', desc:'Detailed geological survey report of the Kalimantan sedimentary basin including stratigraphy, structural geology, and resource potential analysis.', tags:['geology','exploration','kalimantan','survey'], pdf:'assets/sample.pdf' },
+      { id:5, title:'Oil Refinery Process Safety Management', author:'American Petroleum Institute', pages:92, date:'2025-01-28', size:'4.6 MB', cat:'safety', type:'Guideline', desc:'Process safety management framework for oil refineries covering PHA, MOC, PSSR, mechanical integrity, and incident investigation.', tags:['refining','safety','HSE','process'], pdf:'assets/sample.pdf' },
+      { id:6, title:'SNI Geotechnical Investigation for Mining', author:'BSN Indonesia', pages:74, date:'2024-04-01', size:'1.8 MB', cat:'standards', type:'Standard', desc:'National standard for geotechnical investigation methods in mining operations including soil mechanics, rock mechanics, and slope stability.', tags:['geotechnical','standards','SNI','mining'], pdf:'assets/sample.pdf' },
+      { id:7, title:'Production Sharing Contract Guide', author:'SKK Migas', pages:156, date:'2024-07-15', size:'3.9 MB', cat:'oil-gas', type:'Guideline', desc:'Complete guide to Production Sharing Contracts in Indonesia including fiscal terms, cost recovery, and reporting requirements.', tags:['PSC','oil-gas','regulation','contract'], pdf:'assets/sample.pdf' },
+      { id:8, title:'Mining Reclamation & Closure Plan', author:'Ministry of Energy & Mineral Resources', pages:68, date:'2024-12-10', size:'2.1 MB', cat:'regulations', type:'Regulation', desc:'Regulatory framework for post-mining reclamation and closure planning including environmental monitoring, revegetation, and community development.', tags:['reclamation','environment','mining','compliance'], pdf:'assets/sample.pdf' },
+      { id:9, title:'Seismic Data Processing Handbook', author:'Society of Exploration Geophysicists', pages:210, date:'2025-02-01', size:'8.2 MB', cat:'oil-gas', type:'Technical Report', desc:'Comprehensive handbook on seismic data acquisition, processing, and interpretation for hydrocarbon exploration.', tags:['seismic','exploration','geophysics','oil-gas'], pdf:'assets/sample.pdf' },
+      { id:10, title:'Mining Equipment Maintenance Standards', author:'ISO/TC 82 Mining', pages:88, date:'2024-08-22', size:'3.4 MB', cat:'standards', type:'Standard', desc:'International standards for mining equipment maintenance including predictive maintenance, lubrication, wear analysis, and safety inspections.', tags:['equipment','maintenance','standards','mining'], pdf:'assets/sample.pdf' },
+      { id:11, title:'H2S Safety in Oil & Gas Operations', author:'IOGP', pages:56, date:'2025-01-10', size:'1.6 MB', cat:'safety', type:'Guideline', desc:'Safety guidelines for operations involving hydrogen sulfide (H2S) including detection, PPE, emergency response, and training requirements.', tags:['H2S','safety','oil-gas','HSE'], pdf:'assets/sample.pdf' },
+      { id:12, title:'Coal Bed Methane Exploration Report', author:'PT. Geo Energi Nusantara', pages:134, date:'2024-10-05', size:'6.7 MB', cat:'mining', type:'Technical Report', desc:'Technical report on CBM exploration in South Sumatra basin including resource estimation, reservoir characteristics, and production testing.', tags:['CBM','exploration','coal','sumatra'], pdf:'assets/sample.pdf' },
+      { id:13, title:'Fire Protection for Offshore Platforms', author:'NFPA / API RP 14G', pages:42, date:'2024-05-18', size:'1.2 MB', cat:'safety', type:'Standard', desc:'Fire protection design standards for offshore oil and gas platforms including passive fire protection, detection systems, and suppression.', tags:['fire','offshore','safety','standards'], pdf:'assets/sample.pdf' },
+      { id:14, title:'Mineral Resource Estimation Guide', author:'JORC Committee', pages:98, date:'2024-11-30', size:'4.3 MB', cat:'mining', type:'Guideline', desc:'JORC Code compliant mineral resource estimation guidelines covering sampling, data analysis, classification, and reporting.', tags:['JORC','resources','estimation','mining'], pdf:'assets/sample.pdf' },
+      { id:15, title:'LNG Plant Design & Engineering Standards', author:'Gas Technology Institute', pages:178, date:'2025-03-01', size:'7.5 MB', cat:'oil-gas', type:'Standard', desc:'Engineering standards for LNG plant design including liquefaction processes, storage, containment, and safety systems.', tags:['LNG','engineering','standards','gas'], pdf:'assets/sample.pdf' },
+      { id:16, title:'Environmental Impact Assessment for Mining', author:'KLHK RI', pages:312, date:'2024-03-20', size:'9.8 MB', cat:'regulations', type:'Regulation', desc:'Complete EIA regulatory framework for mining operations including AMDAL, UKL-UPL, environmental monitoring, and community engagement.', tags:['EIA','environment','regulation','mining'], pdf:'assets/sample.pdf' },
+      { id:17, title:'Drilling Fluid Engineering Handbook', author:'Baker Hughes / SPE', pages:244, date:'2024-09-12', size:'11.2 MB', cat:'oil-gas', type:'Technical Report', desc:'Comprehensive handbook on drilling fluid technology including mud properties, hydraulics, solids control, and formation damage prevention.', tags:['drilling','fluid','engineering','oil-gas'], pdf:'assets/sample.pdf' },
+      { id:18, title:'ISO 14001: Environmental Management for Mining', author:'ISO / BSN', pages:36, date:'2024-06-01', size:'0.9 MB', cat:'standards', type:'Standard', desc:'Environmental management system requirements and implementation guide for mining operations aligned with ISO 14001:2015.', tags:['ISO','environment','management','standards'], pdf:'assets/sample.pdf' },
+      { id:19, title:'Well Intervention & Workover Guidelines', author:'IADC / API', pages:86, date:'2025-02-15', size:'3.1 MB', cat:'oil-gas', type:'Guideline', desc:'Technical guidelines for well intervention and workover operations including coiled tubing, wireline, snubbing, and stimulation.', tags:['well','intervention','workover','oil-gas'], pdf:'assets/sample.pdf' },
+      { id:20, title:'Mining Explosives Safety & Handling', author:'Ministry of Energy & Mineral Resources', pages:64, date:'2024-12-01', size:'2.8 MB', cat:'safety', type:'Regulation', desc:'Safety regulations for the storage, handling, and use of explosives in mining operations including blast design and transportation.', tags:['explosives','safety','blasting','mining'], pdf:'assets/sample.pdf' },
+      { id:21, title:'Piping & Instrumentation Diagram Standards', author:'ISO / ANSI / ISA', pages:52, date:'2024-07-08', size:'1.5 MB', cat:'standards', type:'Standard', desc:'P&ID development standards for oil & gas facilities including symbology, designation, and documentation requirements.', tags:['P&ID','piping','engineering','standards'], pdf:'assets/sample.pdf' },
+      { id:22, title:'Nickel Mining & Processing Technology', author:'PT. Vale Indonesia / INCO', pages:98, date:'2025-01-20', size:'4.1 MB', cat:'mining', type:'Technical Report', desc:'Technical report on nickel laterite mining and processing technologies including HPAL, RKEF, and ferronickel production.', tags:['nickel','processing','technology','mining'], pdf:'assets/sample.pdf' },
+      { id:23, title:'Flare & Vent Systems Design Standard', author:'API Standard 521', pages:76, date:'2024-10-30', size:'2.2 MB', cat:'oil-gas', type:'Standard', desc:'Design standards for pressure relief, flare, and vent systems in oil and gas facilities including flare sizing and radiation analysis.', tags:['flare','design','safety','standards'], pdf:'assets/sample.pdf' },
+      { id:24, title:'Ground Vibration & Airblast Monitoring', author:'ISEE', pages:44, date:'2024-04-15', size:'1.3 MB', cat:'mining', type:'Guideline', desc:'Monitoring guidelines for ground vibration and airblast from blasting operations including instrumentation, analysis, and regulatory compliance.', tags:['blasting','vibration','monitoring','mining'], pdf:'assets/sample.pdf' }
+    ];
+
+    let activeCat = 'all', activeDoc = null, filteredDocs = [...documents];
+
+    function renderGrid(docs) {
+      const grid = document.getElementById('doc-grid');
+      document.getElementById('result-count').textContent = `(${docs.length})`;
+      document.getElementById('hero-total').textContent = docs.length;
+      document.getElementById('total-docs') && (document.getElementById('total-docs').textContent = docs.length);
+      document.getElementById('mobile-total').textContent = docs.length + ' documents';
+      if (!docs.length) {
+        grid.innerHTML = '<div class="col-span-full text-center py-16"><svg class="w-12 h-12 text-slate-300 mx-auto mb-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg><p class="text-slate-400 text-sm">No documents found</p></div>';
+        return;
+      }
+      grid.innerHTML = docs.map(d => `
+        <div class="doc-card bg-white border border-slate-200 rounded-xl p-4 shadow-sm" data-id="${d.id}">
+          <div class="flex items-start gap-3">
+            <div class="w-9 h-11 rounded-lg bg-gradient-to-b from-red-50 to-red-100 border border-red-200 flex items-center justify-center shrink-0">
+              <svg class="w-4.5 h-4.5 text-red-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            </div>
+            <div class="min-w-0">
+              <h4 class="text-sm font-semibold text-slate-800 leading-snug line-clamp-2">${d.title}</h4>
+              <p class="text-xs text-slate-500 mt-0.5 truncate">${d.author}</p>
+              <div class="flex items-center gap-2 mt-1.5 text-xs text-slate-400">
+                <span class="bg-navy-50 text-navy-600 px-1.5 py-0.5 rounded text-[10px] font-medium">${d.cat === 'oil-gas' ? 'Oil & Gas' : d.cat.charAt(0).toUpperCase() + d.cat.slice(1)}</span>
+                <span>${d.pages}p</span>
+                <span>${d.date}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      `).join('');
+      grid.querySelectorAll('.doc-card').forEach(el => el.addEventListener('click', () => {
+        const doc = documents.find(d => d.id === parseInt(el.dataset.id));
+        if (doc) openDoc(doc);
+      }));
+    }
+
+    function openDoc(doc) {
+      activeDoc = doc;
+      document.getElementById('doc-grid').classList.add('hidden');
+      document.getElementById('pdf-viewer').classList.remove('hidden');
+      document.getElementById('view-title').textContent = doc.title;
+      document.getElementById('viewer-filename').textContent = doc.title + '.pdf';
+      document.getElementById('pdf-embed').src = doc.pdf;
+      document.getElementById('no-selection').classList.add('hidden');
+      document.getElementById('detail-content').classList.remove('hidden');
+      document.getElementById('detail-title').textContent = doc.title;
+      document.getElementById('detail-author').textContent = doc.author;
+      document.getElementById('detail-category').textContent = doc.cat === 'oil-gas' ? 'Oil & Gas' : doc.cat.charAt(0).toUpperCase() + doc.cat.slice(1);
+      document.getElementById('detail-pages').textContent = doc.pages + ' pages';
+      document.getElementById('detail-date').textContent = new Date(doc.date).toLocaleDateString('en-GB', { year:'numeric',month:'short',day:'numeric' });
+      document.getElementById('detail-size').textContent = doc.size;
+      document.getElementById('detail-desc').textContent = doc.desc;
+      document.getElementById('detail-tags').innerHTML = doc.tags.map(t => `<span class="px-2 py-0.5 rounded text-[10px] bg-slate-100 text-slate-500 font-medium">${t}</span>`).join('');
+      document.getElementById('view-doc-btn').onclick = () => openDoc(doc);
+      document.getElementById('download-btn').onclick = () => window.open(doc.pdf, '_blank');
+      document.querySelector('main').scrollIntoView({ behavior:'smooth', block:'start' });
+    }
+
+    function closeDoc() {
+      activeDoc = null;
+      document.getElementById('doc-grid').classList.remove('hidden');
+      document.getElementById('pdf-viewer').classList.add('hidden');
+      document.getElementById('view-title').textContent = activeCat === 'all' ? 'All Documents' : activeCat.charAt(0).toUpperCase() + activeCat.slice(1).replace('-',' & ');
+      document.getElementById('no-selection').classList.remove('hidden');
+      document.getElementById('detail-content').classList.add('hidden');
+    }
+
+    function filterDocs() {
+      const q = document.getElementById('hero-search-input').value.toLowerCase();
+      filteredDocs = documents.filter(d => {
+        const mc = activeCat === 'all' || d.cat === activeCat;
+        const ms = !q || d.title.toLowerCase().includes(q) || d.author.toLowerCase().includes(q) || d.tags.some(t => t.includes(q)) || d.desc.toLowerCase().includes(q);
+        return mc && ms;
+      });
+      renderGrid(filteredDocs);
+      if (activeDoc && !filteredDocs.find(d => d.id === activeDoc.id)) closeDoc();
+    }
+
+    // Category buttons
+    document.querySelectorAll('[data-cat], [data-cat-hero]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const cat = btn.dataset.cat || btn.dataset.catHero;
+        document.querySelectorAll('[data-cat]').forEach(b => b.classList.remove('active-cat'));
+        document.querySelectorAll('[data-cat-hero]').forEach(b => b.classList.remove('active-cat'));
+        document.querySelectorAll(`[data-cat="${cat}"],[data-cat-hero="${cat}"]`).forEach(b => b.classList.add('active-cat'));
+        activeCat = cat;
+        const label = cat === 'all' ? 'All Documents' : cat.charAt(0).toUpperCase() + cat.slice(1).replace('-',' & ');
+        document.getElementById('view-title').textContent = label;
+        if (activeDoc) closeDoc();
+        filterDocs();
+        document.getElementById('mobile-cat')?.classList.add('hidden');
+      });
+    });
+
+    // Search
+    let st;
+    document.getElementById('hero-search-input').addEventListener('input', () => { clearTimeout(st); st = setTimeout(filterDocs, 200); });
+
+    // Close viewer
+    document.getElementById('close-viewer').addEventListener('click', closeDoc);
+
+    // Mobile menu toggle
+    document.getElementById('menuBtn')?.addEventListener('click', () => {
+      document.getElementById('mobileMenu')?.classList.toggle('hidden');
+    });
+    document.getElementById('menuOverlay')?.addEventListener('click', () => {
+      document.getElementById('mobileMenu')?.classList.add('hidden');
+    });
+
+    // Mobile
+    window.toggleMobileCat = function() { document.getElementById('mobile-cat')?.classList.toggle('hidden'); };
+    const ml = document.getElementById('mobile-cat-list');
+    document.querySelectorAll('#category-list button[data-cat]').forEach(b => { const c = b.cloneNode(true); ml.appendChild(c); });
+    document.querySelectorAll('.tag').forEach(t => t.addEventListener('click', () => { document.getElementById('hero-search-input').value = t.textContent.trim(); filterDocs(); }));
+
+    // Init
+    renderGrid(documents);
+  </script>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="bg-slate-900 text-slate-300 border-t border-slate-800">
+    <!-- Main footer -->
+    <div class="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
+        <!-- Brand -->
+        <div class="lg:col-span-1">
+          <div class="flex items-center gap-2.5 mb-3">
+            <svg class="w-8 h-8" viewBox="0 0 58 52" fill="none">
+              <path d="M26.7 4.5L3 47.5h18.2L35.5 20.9 26.7 4.5z" fill="#0067B1"/>
+              <path d="M39.2 9.6L23.8 47.5h18.7L55 47.2 39.2 9.6z" fill="#003E7E"/>
+              <path d="M36.2 30.5l-7.8 17h13.9l10.8-.2-16.9-16.8z" fill="#10A4C4"/>
+              <path d="M25.6 30.8H10.9l-9 16.7h18.7l5-16.7z" fill="#0B79BD"/>
+            </svg>
+            <span class="font-bold text-base text-white">PST<span class="text-amber-400"> Hebat</span></span>
+            <span class="text-slate-500 text-sm ml-1">/ MHU</span>
+          </div>
+          <p class="text-sm text-slate-400 leading-relaxed max-w-xs">
+            Mining document library — technical reports, standards, regulations, and safety guidelines for the mining and energy industry.
+          </p>
+          <div class="flex items-center gap-4 mt-4">
+            <span class="flex items-center gap-1.5 text-xs text-slate-500">
+              <span class="w-2 h-2 rounded-full bg-emerald-500"></span> Updated weekly
+            </span>
+            <span class="flex items-center gap-1.5 text-xs text-slate-500">
+              <span class="w-2 h-2 rounded-full bg-navy-500"></span> 24 documents
+            </span>
+          </div>
+        </div>
+
+        <!-- Categories -->
+        <div>
+          <h4 class="text-xs font-semibold uppercase tracking-wider text-white mb-3">Categories</h4>
+          <ul class="space-y-2 text-sm">
+            <li><a href="#" class="text-slate-400 hover:text-white transition">Mining</a></li>
+            <li><a href="#" class="text-slate-400 hover:text-white transition">Oil &amp; Gas</a></li>
+            <li><a href="#" class="text-slate-400 hover:text-white transition">Safety &amp; HSE</a></li>
+            <li><a href="#" class="text-slate-400 hover:text-white transition">Regulations</a></li>
+            <li><a href="#" class="text-slate-400 hover:text-white transition">Standards</a></li>
+          </ul>
+        </div>
+
+        <!-- Document Types -->
+        <div>
+          <h4 class="text-xs font-semibold uppercase tracking-wider text-white mb-3">Document Types</h4>
+          <ul class="space-y-2 text-sm">
+            <li><a href="#" class="text-slate-400 hover:text-white transition">Technical Reports</a></li>
+            <li><a href="#" class="text-slate-400 hover:text-white transition">Standards &amp; Codes</a></li>
+            <li><a href="#" class="text-slate-400 hover:text-white transition">Regulations &amp; Laws</a></li>
+            <li><a href="#" class="text-slate-400 hover:text-white transition">Safety Guidelines</a></li>
+            <li><a href="#" class="text-slate-400 hover:text-white transition">Industry Handbooks</a></li>
+          </ul>
+        </div>
+
+        <!-- Stats & Info -->
+        <div>
+          <h4 class="text-xs font-semibold uppercase tracking-wider text-white mb-3">Library Stats</h4>
+          <div class="space-y-3">
+            <div class="flex items-center justify-between text-sm">
+              <span class="text-slate-400">Total Documents</span>
+              <span class="font-semibold text-white">24</span>
+            </div>
+            <div class="flex items-center justify-between text-sm">
+              <span class="text-slate-400">Categories</span>
+              <span class="font-semibold text-white">5</span>
+            </div>
+            <div class="flex items-center justify-between text-sm">
+              <span class="text-slate-400">Last Updated</span>
+              <span class="font-semibold text-white">Jun 2026</span>
+            </div>
+            <div class="flex items-center justify-between text-sm">
+              <span class="text-slate-400">Format</span>
+              <span class="font-semibold text-white">PDF</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom bar -->
+    <div class="border-t border-slate-800">
+      <div class="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col sm:flex-row justify-between items-center gap-2">
+        <p class="text-xs text-slate-500">&copy; 2026 PST Hebat. All rights reserved. For educational and reference purposes.</p>
+        <div class="flex items-center gap-4 text-xs text-slate-500">
+          <a href="#" class="hover:text-white transition">Terms</a>
+          <a href="#" class="hover:text-white transition">Privacy</a>
+          <a href="#" class="hover:text-white transition">Contact</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

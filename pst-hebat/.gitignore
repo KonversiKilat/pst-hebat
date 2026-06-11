@@ -1,0 +1,19 @@
+node_modules/
+.DS_Store
+*.log
+
+# WordPress
+wp-config.php
+wp-content/uploads/
+wp-content/cache/
+wp-content/backup-db/
+*.sql
+.env
+
+# Docker
+.docker/
+
+# IDE
+.idea/
+.vscode/
+*.swp
