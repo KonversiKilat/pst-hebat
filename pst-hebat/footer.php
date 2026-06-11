@@ -9,7 +9,7 @@
 	<!-- ===== FOOTER ===== -->
 	<footer class="bg-slate-900 text-slate-300 border-t border-slate-800">
 		<div class="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-			<div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+			<div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
 				<!-- Brand -->
 				<div class="lg:col-span-1">
 					<div class="flex items-center gap-2.5 mb-3">
