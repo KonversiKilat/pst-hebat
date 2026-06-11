@@ -85,9 +85,9 @@
 					?>
 				<?php else : ?>
 				<div class="flex items-center gap-4 text-xs text-slate-500">
-					<a href="#" class="hover:text-white transition no-underline">Terms</a>
-					<a href="#" class="hover:text-white transition no-underline">Privacy</a>
-					<a href="#" class="hover:text-white transition no-underline">Contact</a>
+					<a href="<?php echo esc_url(get_permalink(get_page_by_path('terms'))); ?>" class="hover:text-white transition no-underline">Terms</a>
+					<a href="<?php echo esc_url(get_permalink(get_page_by_path('privacy-policy'))); ?>" class="hover:text-white transition no-underline">Privacy</a>
+					<a href="<?php echo esc_url(get_permalink(get_page_by_path('contact'))); ?>" class="hover:text-white transition no-underline">Contact</a>
 				</div>
 				<?php endif; ?>
 			</div>

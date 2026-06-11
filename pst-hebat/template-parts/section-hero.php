@@ -34,10 +34,7 @@
 					<svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M12 18v-6"/><path d="m9 15 3 3 3-3"/></svg>
 					<?php echo esc_html(get_theme_mod('hero_cta_primary', 'Browse Documents')); ?>
 				</a>
-				<a href="#search" class="btn-ghost inline-flex items-center gap-1.5 px-4 py-1.5 glass text-white font-semibold rounded-lg text-xs no-underline whitespace-nowrap">
-					<svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
-					<?php echo esc_html(get_theme_mod('hero_cta_secondary', 'Search Library')); ?>
-				</a>
+
 				<div class="hero-search relative flex-1 min-w-[160px] max-w-xs">
 					<svg class="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-white/40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
 					<input type="text" id="hero-search-input" placeholder="<?php echo esc_attr(get_theme_mod('hero_search_placeholder', 'Search documents...')); ?>" class="w-full bg-white/10 backdrop-blur-sm border border-white/20 rounded-lg pl-8 pr-3 py-1.5 text-xs text-white placeholder-white/40 focus:outline-none focus:border-brand-500/60 transition">

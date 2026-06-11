@@ -43,29 +43,6 @@ get_header();
 
 		<div>
 			<h3 class="text-xs font-semibold uppercase tracking-wider text-slate-400 mb-3">
-				<?php esc_html_e('Document Type', 'pst_hebat'); ?>
-			</h3>
-			<div class="space-y-1">
-				<label class="flex items-center gap-2 px-3 py-1.5 text-sm text-slate-500 hover:text-slate-700 cursor-pointer">
-					<input type="checkbox" checked class="rounded border-slate-300 text-navy-500 focus:ring-navy-500/40 w-3.5 h-3.5"> Technical Report
-				</label>
-				<label class="flex items-center gap-2 px-3 py-1.5 text-sm text-slate-500 hover:text-slate-700 cursor-pointer">
-					<input type="checkbox" checked class="rounded border-slate-300 text-navy-500 focus:ring-navy-500/40 w-3.5 h-3.5"> Standard
-				</label>
-				<label class="flex items-center gap-2 px-3 py-1.5 text-sm text-slate-500 hover:text-slate-700 cursor-pointer">
-					<input type="checkbox" checked class="rounded border-slate-300 text-navy-500 focus:ring-navy-500/40 w-3.5 h-3.5"> Regulation
-				</label>
-				<label class="flex items-center gap-2 px-3 py-1.5 text-sm text-slate-500 hover:text-slate-700 cursor-pointer">
-					<input type="checkbox" checked class="rounded border-slate-300 text-navy-500 focus:ring-navy-500/40 w-3.5 h-3.5"> Guideline
-				</label>
-				<label class="flex items-center gap-2 px-3 py-1.5 text-sm text-slate-500 hover:text-slate-700 cursor-pointer">
-					<input type="checkbox" checked class="rounded border-slate-300 text-navy-500 focus:ring-navy-500/40 w-3.5 h-3.5"> Report / Analysis
-				</label>
-			</div>
-		</div>
-
-		<div>
-			<h3 class="text-xs font-semibold uppercase tracking-wider text-slate-400 mb-3">
 				<?php esc_html_e('Tags', 'pst_hebat'); ?>
 			</h3>
 			<div class="flex flex-wrap gap-1.5">
@@ -85,11 +62,7 @@ get_header();
 
 	<!-- ===== MAIN CENTER ===== -->
 	<main class="flex-1 min-w-0">
-		<div class="flex items-center justify-between mb-4">
-			<div class="flex items-center gap-2 text-sm">
-				<span id="view-title" class="font-semibold text-slate-800"><?php esc_html_e('All Documents', 'pst_hebat'); ?></span>
-				<span id="result-count" class="text-slate-400 text-xs font-medium">(24)</span>
-			</div>
+		<div class="flex items-center justify-end mb-4">
 			<select id="sort-select" class="bg-white border border-slate-200 rounded-lg px-2 py-1.5 text-xs text-slate-500 focus:outline-none focus:ring-1 focus:ring-navy-500/40">
 				<option value="newest"><?php esc_html_e('Newest', 'pst_hebat'); ?></option>
 				<option value="oldest"><?php esc_html_e('Oldest', 'pst_hebat'); ?></option>
