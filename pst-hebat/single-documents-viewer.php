@@ -13,12 +13,15 @@ while (have_posts()) : the_post();
 	$pdf_url      = get_post_meta($current_id, '_pst_hebat_pdf_url', true);
 	$pdf_filesize = '';
 	if ($pdf_url) {
-		$tmp = @wp_remote_head($pdf_url, array('timeout' => 5));
-		if (!is_wp_error($tmp) && isset($tmp['headers']['content-length'])) {
-			$bytes = (int) $tmp['headers']['content-length'];
-			$pdf_filesize = $bytes > 1048576
-				? round($bytes / 1048576, 1) . ' MB'
-				: round($bytes / 1024) . ' KB';
+		$pdf_id = get_post_meta($current_id, '_pst_hebat_pdf_id', true);
+		if ($pdf_id) {
+			$file_path = get_attached_file($pdf_id);
+			if ($file_path && file_exists($file_path)) {
+				$bytes = filesize($file_path);
+				$pdf_filesize = $bytes > 1048576
+					? round($bytes / 1048576, 1) . ' MB'
+					: round($bytes / 1024) . ' KB';
+			}
 		}
 	}
 
@@ -85,7 +88,7 @@ if (!empty($cats)) {
 		</summary>
 		<div class="border-t border-slate-100 max-h-64 overflow-y-auto">
 			<?php
-			rewind_posts();
+			$siblings->rewind_posts();
 			while ($siblings->have_posts()) : $siblings->the_post();
 				$m_id   = get_the_ID();
 				$m_url  = get_post_meta($m_id, '_pst_hebat_pdf_url', true);

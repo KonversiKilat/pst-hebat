@@ -46,9 +46,14 @@
 		.tag{transition:all .15s ease}
 		.tag:hover{background:rgba(42,93,176,0.12);color:#2a5db0}
 		.hero-search input:focus{box-shadow:0 0 0 3px rgba(42,93,176,0.25)}
-		.nav-link{position:relative;transition:color .2s}
-		.nav-link::after{content:'';position:absolute;bottom:-2px;left:0;width:0;height:2px;background:#0B63CE;transition:width .3s cubic-bezier(0.16,1,0.3,1);border-radius:1px}
-		.nav-link:hover::after{width:100%}
+		.nav-link{transition:color .2s}
+		#primary-menu li,.menu-item{list-style:none}
+		#sidebar-left .widget{margin:0;padding-top:12px}
+		#sidebar-left .widget a{display:inline-flex;align-items:center;gap:8px;padding-top:6px;padding-bottom:6px}
+		#sidebar-left .widget a::before{content:'';display:inline-block;width:14px;height:14px;min-width:14px;background:#94a3b8;mask-image:url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>');mask-size:contain;mask-repeat:no-repeat;-webkit-mask-image:url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>');-webkit-mask-size:contain;-webkit-mask-repeat:no-repeat;vertical-align:middle;flex-shrink:0}
+		#sidebar-right .widget{margin:0;padding:0}
+		#sidebar-right .widget a{display:inline-flex;align-items:center;gap:8px;padding-top:6px;padding-bottom:6px}
+		#sidebar-right .widget a::before{content:'';display:inline-block;width:14px;height:14px;min-width:14px;background:#94a3b8;mask-image:url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>');mask-size:contain;mask-repeat:no-repeat;-webkit-mask-image:url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>');-webkit-mask-size:contain;-webkit-mask-repeat:no-repeat;vertical-align:middle;flex-shrink:0}
 		.glass{background:rgba(255,255,255,0.08);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,0.12)}
 		.gradient-text{background:linear-gradient(135deg,#0B63CE,#0CA7B4);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 		.btn-primary{transition:all .25s cubic-bezier(0.16,1,0.3,1)}
@@ -97,18 +102,9 @@
 			<!-- Left: PST Logo + Brand -->
 			<div class="flex items-center gap-3 md:gap-5">
 				<a href="<?php echo esc_url(home_url('/')); ?>" class="flex items-center gap-2.5 no-underline group">
-					<?php
-					$navbar_logo_id = get_theme_mod('navbar_logo', 0);
-					if ($navbar_logo_id) :
-						echo wp_get_attachment_image($navbar_logo_id, array(48, 48), false, array('class' => 'w-9 h-9 md:w-10 md:h-10 object-contain', 'aria-label' => __('PST Logo', 'pst_hebat')));
-					else : ?>
-					<svg class="w-9 h-9 md:w-10 md:h-10" viewBox="0 0 58 52" fill="none" aria-label="PST Logo">
-						<path d="M26.7 4.5L3 47.5h18.2L35.5 20.9 26.7 4.5z" fill="#0067B1"/>
-						<path d="M39.2 9.6L23.8 47.5h18.7L55 47.2 39.2 9.6z" fill="#003E7E"/>
-						<path d="M36.2 30.5l-7.8 17h13.9l10.8-.2-16.9-16.8z" fill="#10A4C4"/>
-						<path d="M25.6 30.8H10.9l-9 16.7h18.7l5-16.7z" fill="#0B79BD"/>
-					</svg>
-					<?php endif; ?>
+					<?php $theme_uri = get_template_directory_uri(); ?>
+					<img src="<?php echo esc_url($theme_uri); ?>/assets/logo-pst.png" alt="PST Logo" class="h-9 md:h-10 object-contain">
+					<img src="<?php echo esc_url($theme_uri); ?>/assets/pst-2.png" alt="PST Logo 2" class="h-9 md:h-10 object-contain">
 					<div class="leading-tight">
 						<div class="text-xl md:text-2xl font-black tracking-tight text-gray-900 group-hover:text-brand-600 transition-colors">
 							<?php echo esc_html(get_theme_mod('navbar_initials', 'PST')); ?>
@@ -160,18 +156,7 @@
 				?>
 				<?php else : ?>
 				<a href="#" class="hidden md:flex items-center gap-3 px-4 py-2 hover:bg-gray-50 rounded-xl transition-colors no-underline">
-					<?php
-					$mhu_logo_id = get_theme_mod('mhu_logo', 0);
-					if ($mhu_logo_id) :
-						echo wp_get_attachment_image($mhu_logo_id, array(48, 48), false, array('class' => 'w-9 h-9 object-contain', 'aria-hidden' => 'true'));
-					else : ?>
-					<svg class="w-9 h-9" viewBox="0 0 58 52" fill="none" aria-hidden="true">
-						<path d="M26.7 4.5L3 47.5h18.2L35.5 20.9 26.7 4.5z" fill="#0067B1"/>
-						<path d="M39.2 9.6L23.8 47.5h18.7L55 47.2 39.2 9.6z" fill="#003E7E"/>
-						<path d="M36.2 30.5l-7.8 17h13.9l10.8-.2-16.9-16.8z" fill="#10A4C4"/>
-						<path d="M25.6 30.8H10.9l-9 16.7h18.7l5-16.7z" fill="#0B79BD"/>
-					</svg>
-					<?php endif; ?>
+					<img src="<?php echo esc_url(get_template_directory_uri()); ?>/assets/mhu-logo-sm.png" alt="MHU Logo" class="h-9 object-contain">
 					<div class="leading-none">
 						<div class="text-xl font-extrabold tracking-tight text-[#1f2228]"><?php echo esc_html(get_theme_mod('navbar_mhu_initials', 'MHU')); ?></div>
 						<div class="text-[10px] font-bold text-[#374151] -mt-0.5"><?php echo esc_html(get_theme_mod('navbar_mhu_full', 'Mining Holding Indonesia')); ?></div>
@@ -204,7 +189,7 @@
 			<hr class="my-2 border-gray-100">
 			<div class="flex items-center gap-3 px-4 py-2.5">
 				<?php if ($mhu_logo_id) :
-					echo wp_get_attachment_image($mhu_logo_id, array(36, 36), false, array('class' => 'w-7 h-7 shrink-0 object-contain', 'aria-hidden' => 'true'));
+					echo wp_get_attachment_image($mhu_logo_id, array(36, 36), false, array('class' => 'h-7 shrink-0 object-contain', 'aria-hidden' => 'true'));
 				else : ?>
 				<svg class="w-7 h-7 shrink-0" viewBox="0 0 58 52" fill="none" aria-hidden="true">
 					<path d="M26.7 4.5L3 47.5h18.2L35.5 20.9 26.7 4.5z" fill="#0067B1"/>

@@ -88,6 +88,28 @@ function pst_hebat_widgets_init() {
 		'before_title'  => '<h4 class="text-xs font-semibold uppercase tracking-wider text-white mb-3">',
 		'after_title'   => '</h4>',
 	));
+
+	/* Sidebar — Left (homepage) */
+	register_sidebar(array(
+		'name'          => esc_html__('Left Sidebar (Homepage)', 'pst_hebat'),
+		'id'            => 'sidebar-left',
+		'description'   => esc_html__('Widget area di sidebar kiri homepage. Untuk link MEA, SMKP Minerba, dll.', 'pst_hebat'),
+		'before_widget' => '<div id="%1$s" class="widget %2$s">',
+		'after_widget'  => '</div>',
+		'before_title'  => '<h3 class="text-xs font-semibold uppercase tracking-wider text-slate-400 mb-3">',
+		'after_title'   => '</h3>',
+	));
+
+	/* Sidebar — Right (homepage) */
+	register_sidebar(array(
+		'name'          => esc_html__('Right Sidebar (Homepage)', 'pst_hebat'),
+		'id'            => 'sidebar-right',
+		'description'   => esc_html__('Widget area di sidebar kanan homepage. Untuk Materi & Dokumen, dll.', 'pst_hebat'),
+		'before_widget' => '<div id="%1$s" class="widget %2$s">',
+		'after_widget'  => '</div>',
+		'before_title'  => '<h3 class="text-xs font-semibold uppercase tracking-wider text-slate-400 mb-4">',
+		'after_title'   => '</h3>',
+	));
 }
 add_action('widgets_init', 'pst_hebat_widgets_init');
 
