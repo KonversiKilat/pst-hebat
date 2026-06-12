@@ -3,8 +3,7 @@
 ## 1. Login
 
 1. Buka browser, kunjungi:
-   - **SHEMA Hakam:** `http://shemahakam.com/wp-admin`
-   - **PST Hebat:** `https://demo3.ikamai.com/wp-admin`
+   - **PST Hebat:** `https://shemahakam.com/wp-admin`
 
 2. Masukin username & password:
    - **Username:** `admin`
@@ -65,21 +64,12 @@ Setiap dokumen bisa punya file PDF yang bisa dilihat langsung di halaman dokumen
 
 ```
 Documents (parent)
-├── Safety & HSE        → dokumen K3 dan safety
-├── Mining              → dokumen pertambangan
-├── Oil & Gas           → dokumen migas
-├── Regulations         → dokumen regulasi
-├── Standards           → dokumen standar/SNI
 ├── MEA                 → dokumen lingkungan
 ├── SMKP Minerba        → dokumen SMKP
 ├── Materi              → materi training/induksi
 ```
 
-### Artikel Biasa
-
-Buat artikel/informasi (bukan dokumen):
-- Pilih kategori **Artikel**
-- Bedanya: gak perlu upload PDF
+> **Note:** Jika butuh kategori baru, buat di **Posts → Categories** dengan parent **Documents**. Hanya kategori di bawah **Documents** yang pake template PDF viewer (3 kolom). Kategori lain (di luar Documents) pake template blog biasa.
 
 ### Halaman Dokumen
 

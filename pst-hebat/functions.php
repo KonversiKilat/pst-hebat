@@ -239,6 +239,18 @@ function pst_hebat_customize_register($wp_customize) {
 		'type'    => 'text',
 	));
 
+	/* Hero background image */
+	$wp_customize->add_setting('hero_bg_image', array(
+		'default'           => '',
+		'sanitize_callback' => 'absint',
+	));
+	$wp_customize->add_control(new WP_Customize_Media_Control($wp_customize, 'hero_bg_image', array(
+		'label'       => esc_html__('Background Image', 'pst_hebat'),
+		'description' => esc_html__('Upload gambar background hero. Ukuran ideal: 1920x600px. Biarkan kosong untuk menggunakan default.', 'pst_hebat'),
+		'section'     => 'pst_hero',
+		'mime_type'   => 'image',
+	)));
+
 	$wp_customize->add_setting('hero_title', array(
 		'default'           => 'Portal K3, Lingkungan,<br><span class="gradient-text">dan Operasional</span><br>Tambang',
 		'sanitize_callback' => 'wp_kses_post',

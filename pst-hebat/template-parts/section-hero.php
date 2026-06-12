@@ -8,7 +8,14 @@
 ?>
 <section class="relative h-[300px] max-h-[300px] flex items-center pt-4 overflow-hidden text-white">
 	<!-- Background image -->
-	<div class="absolute inset-0" style="background:url('<?php echo esc_url(get_template_directory_uri()); ?>/assets/images/hero-mining-quarry.jpg') center/cover no-repeat;"></div>
+	<?php
+	$hero_bg_id = get_theme_mod('hero_bg_image', 0);
+	$hero_bg_url = $hero_bg_id ? wp_get_attachment_image_url($hero_bg_id, 'full') : '';
+	if (!$hero_bg_url) {
+		$hero_bg_url = get_template_directory_uri() . '/assets/images/hero-mining-quarry.jpg';
+	}
+	?>
+	<div class="absolute inset-0" style="background:url('<?php echo esc_url($hero_bg_url); ?>') center/cover no-repeat;"></div>
 	<!-- Dark overlays -->
 	<div class="absolute inset-0 bg-gradient-to-br from-brand-950/98 via-brand-900/95 to-gray-900/95"></div>
 	<div class="absolute inset-0 bg-black/40"></div>
