@@ -36,10 +36,19 @@ get_header();
 						// SMKP Minerba group heading
 				?>
 				<div class="px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-slate-400 mt-2"><?php echo esc_html($cat->name); ?></div>
-				<?php else : ?>
+				<?php else :
+					$has_posts = !$in_smkp ? get_posts(array('cat' => $cat->term_id, 'posts_per_page' => 5, 'orderby' => 'title', 'order' => 'ASC', 'no_found_rows' => true)) : array();
+				?>
 				<a href="<?php echo esc_url(get_category_link($cat)); ?>" data-cat="<?php echo esc_attr($cat->slug); ?>" class="w-full text-left px-3 py-2 rounded-lg text-sm text-slate-500 hover:text-slate-700 hover:bg-slate-100 border border-transparent transition no-underline block <?php echo $in_smkp ? 'pl-7' : ''; ?>">
 					<?php echo esc_html($cat->name); ?>
 				</a>
+				<?php if ($has_posts) : ?>
+					<?php foreach ($has_posts as $p) : ?>
+				<a href="<?php echo esc_url(get_permalink($p->ID)); ?>" class="w-full text-left px-3 pl-7 py-1.5 rounded-lg text-xs text-slate-400 hover:text-slate-600 hover:bg-slate-50 border border-transparent transition no-underline block">
+					<?php echo esc_html($p->post_title); ?>
+				</a>
+					<?php endforeach; ?>
+				<?php endif; ?>
 				<?php endif;
 				endforeach; ?>
 			</div>
