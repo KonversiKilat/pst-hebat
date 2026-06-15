@@ -28,7 +28,7 @@ get_header();
 					<?php esc_html_e('All Documents', 'pst_hebat'); ?>
 				</a>
 				<?php
-				$industry_cats = pst_hebat_sorted_document_cats();
+				$industry_cats = pst_hebat_sorted_document_cats(array(get_cat_ID('Health, Safety, and Environment (HSE)')));
 				$in_smkp = false;
 				foreach ($industry_cats as $cat) :
 					if ($cat->slug === 'smkp-minerba') :
@@ -242,6 +242,26 @@ get_header();
 		<div class="sticky top-4 bg-white border border-slate-200 rounded-xl p-5 shadow-sm">
 			<?php if (is_active_sidebar('sidebar-right')) : ?>
 				<?php dynamic_sidebar('sidebar-right'); ?>
+			<?php endif; ?>
+
+			<?php
+			$hse_cat = get_category_by_slug('hse');
+			if ($hse_cat) :
+				$hse_posts = get_posts(array('cat' => $hse_cat->term_id, 'posts_per_page' => -1, 'orderby' => 'title', 'order' => 'ASC', 'no_found_rows' => true));
+				if ($hse_posts) :
+			?>
+			<div class="pt-4 border-t border-slate-200 mt-4">
+				<h3 class="text-xs font-semibold uppercase tracking-wider text-slate-400 mb-3"><?php echo esc_html($hse_cat->name); ?></h3>
+				<div class="space-y-1">
+					<?php foreach ($hse_posts as $p) : ?>
+					<a href="<?php echo esc_url(get_permalink($p->ID)); ?>" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm text-slate-500 hover:text-slate-700 hover:bg-slate-100 transition no-underline">
+						<svg class="w-3.5 h-3.5 text-slate-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+						<?php echo esc_html($p->post_title); ?>
+					</a>
+					<?php endforeach; ?>
+				</div>
+			</div>
+			<?php endif; ?>
 			<?php endif; ?>
 		</div>
 	</aside>

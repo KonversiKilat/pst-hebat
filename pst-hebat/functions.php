@@ -1194,7 +1194,7 @@ function pst_hebat_save_doc_order($post_id) {
 add_action('save_post', 'pst_hebat_save_doc_order');
 
 /** Get Documents sub-categories sorted by SMKP order */
-function pst_hebat_sorted_document_cats() {
+function pst_hebat_sorted_document_cats($exclude = array()) {
 	global $wpdb;
 	$doc_parent = get_category_by_slug('documents');
 	if (!$doc_parent) return array();
@@ -1203,6 +1203,7 @@ function pst_hebat_sorted_document_cats() {
 	$top = get_categories(array(
 		'parent' => $doc_parent->term_id,
 		'hide_empty' => false,
+		'exclude' => $exclude,
 	));
 
 	// Sort top-level: MEA first, then SMKP Minerba
