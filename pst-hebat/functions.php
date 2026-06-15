@@ -1015,32 +1015,40 @@ function pst_hebat_custom_redirects() {
 		exit;
 	}
 
-	// 2. Auto-redirect: sub-category under Documents → first post (by doc order)
-	if (preg_match('#^/category/documents/([^/]+)/?$#', $request, $m)) {
+	// 2. Auto-redirect: any category under Documents hierarchy → first post
+	// Matches: /category/documents/{subcat}/ or /category/documents/{grp}/{subcat}/
+	if (preg_match('#^/category/documents/(?:[^/]+/)?([^/]+)/?$#', $request, $m)) {
 		$cat = get_category_by_slug($m[1]);
-		if ($cat && $cat->parent) {
-			$doc_parent = get_category_by_slug('documents');
-			if ($doc_parent && $cat->parent === $doc_parent->term_id) {
-				$posts = get_posts(array(
-					'post_type'      => 'post',
-					'posts_per_page' => -1,
-					'post_status'    => 'publish',
-					'cat'            => $cat->term_id,
-					'orderby'        => 'title',
-					'order'          => 'ASC',
-					'no_found_rows'  => true,
-				));
-				if (!empty($posts)) {
-					usort($posts, function($a, $b) {
-						$oa = (int) get_post_meta($a->ID, '_pst_hebat_doc_order', true);
-						$ob = (int) get_post_meta($b->ID, '_pst_hebat_doc_order', true);
-						if ($oa === $ob) return strcmp($a->post_title, $b->post_title);
-						return $oa - $ob;
-					});
-					wp_redirect(get_permalink($posts[0]->ID), 301);
-					exit;
-				}
-			}
+		if (!$cat) return;
+		// Verify it is under Documents hierarchy
+		$check = $cat;
+		$is_doc_child = false;
+		while ($check->parent) {
+			$p = get_term($check->parent, 'category');
+			if (!$p) break;
+			if ($p->slug === 'documents') { $is_doc_child = true; break; }
+			$check = $p;
+		}
+		if (!$is_doc_child) return;
+
+		$posts = get_posts(array(
+			'post_type'      => 'post',
+			'posts_per_page' => -1,
+			'post_status'    => 'publish',
+			'cat'            => $cat->term_id,
+			'orderby'        => 'title',
+			'order'          => 'ASC',
+			'no_found_rows'  => true,
+		));
+		if (!empty($posts)) {
+			usort($posts, function($a, $b) {
+				$oa = (int) get_post_meta($a->ID, '_pst_hebat_doc_order', true);
+				$ob = (int) get_post_meta($b->ID, '_pst_hebat_doc_order', true);
+				if ($oa === $ob) return strcmp($a->post_title, $b->post_title);
+				return $oa - $ob;
+			});
+			wp_redirect(get_permalink($posts[0]->ID), 301);
+			exit;
 		}
 	}
 }
@@ -1187,31 +1195,53 @@ add_action('save_post', 'pst_hebat_save_doc_order');
 
 /** Get Documents sub-categories sorted by SMKP order */
 function pst_hebat_sorted_document_cats() {
+	global $wpdb;
 	$doc_parent = get_category_by_slug('documents');
 	if (!$doc_parent) return array();
 
-	$cats = get_categories(array(
-		'child_of' => $doc_parent->term_id,
+	// Top-level: direct children of Documents
+	$top = get_categories(array(
+		'parent' => $doc_parent->term_id,
 		'hide_empty' => false,
 	));
 
-	$order = array(
-		'kebijakan'              => 1,
-		'perencanaan'            => 2,
-		'organisasi-dan-personil' => 3,
-		'implementasi'           => 4,
-		'evaluasi-dan-tindak-lanjut' => 5,
-		'dokumentasi'            => 6,
-		'tinjauan-manajemen'     => 7,
-	);
-
-	usort($cats, function($a, $b) use ($order) {
-		$oa = isset($order[$a->slug]) ? $order[$a->slug] : 999;
-		$ob = isset($order[$b->slug]) ? $order[$b->slug] : 999;
+	// Sort top-level: MEA first, then SMKP Minerba
+	$top_order = array('mea' => 1, 'smkp-minerba' => 2);
+	usort($top, function($a, $b) use ($top_order) {
+		$oa = isset($top_order[$a->slug]) ? $top_order[$a->slug] : 999;
+		$ob = isset($top_order[$b->slug]) ? $top_order[$b->slug] : 999;
 		return $oa - $ob;
 	});
 
-	return $cats;
+	// For SMKP Minerba, get its children in order
+	$smkp = null;
+	foreach ($top as $i => $t) {
+		if ($t->slug === 'smkp-minerba') { $smkp = $t; break; }
+	}
+
+	$result = array();
+	foreach ($top as $t) {
+		if ($t->slug === 'smkp-minerba') {
+			// Add SMKP as a group header
+			$result[] = $t;
+			// Get its children sorted
+			$children = get_categories(array('parent' => $t->term_id, 'hide_empty' => false));
+			$child_order = array(
+				'kebijakan' => 1, 'perencanaan' => 2, 'organisasi-dan-personil' => 3,
+				'implementasi' => 4, 'evaluasi-fu' => 5, 'dokumentasi' => 6, 'tinjauan-manajemen' => 7,
+			);
+			usort($children, function($a, $b) use ($child_order) {
+				$oa = isset($child_order[$a->slug]) ? $child_order[$a->slug] : 999;
+				$ob = isset($child_order[$b->slug]) ? $child_order[$b->slug] : 999;
+				return $oa - $ob;
+			});
+			foreach ($children as $c) $result[] = $c;
+		} else {
+			$result[] = $t;
+		}
+	}
+
+	return $result;
 }
 
 /** Helper: get document WP_Query args with custom ordering */

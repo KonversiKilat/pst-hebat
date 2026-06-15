@@ -29,12 +29,19 @@ get_header();
 				</a>
 				<?php
 				$industry_cats = pst_hebat_sorted_document_cats();
+				$in_smkp = false;
 				foreach ($industry_cats as $cat) :
+					if ($cat->slug === 'smkp-minerba') :
+						$in_smkp = true;
+						// SMKP Minerba group heading
 				?>
-				<a href="<?php echo esc_url(get_category_link($cat)); ?>" data-cat="<?php echo esc_attr($cat->slug); ?>" class="w-full text-left px-3 py-2 rounded-lg text-sm text-slate-500 hover:text-slate-700 hover:bg-slate-100 border border-transparent transition no-underline block">
+				<div class="px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-slate-400 mt-2"><?php echo esc_html($cat->name); ?></div>
+				<?php else : ?>
+				<a href="<?php echo esc_url(get_category_link($cat)); ?>" data-cat="<?php echo esc_attr($cat->slug); ?>" class="w-full text-left px-3 py-2 rounded-lg text-sm text-slate-500 hover:text-slate-700 hover:bg-slate-100 border border-transparent transition no-underline block <?php echo $in_smkp ? 'pl-7' : ''; ?>">
 					<?php echo esc_html($cat->name); ?>
 				</a>
-				<?php endforeach; ?>
+				<?php endif;
+				endforeach; ?>
 			</div>
 		</div>
 
