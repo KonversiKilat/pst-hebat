@@ -239,7 +239,7 @@ get_header();
 
 	<!-- ===== RIGHT SIDEBAR ===== -->
 	<aside id="sidebar-right" class="hidden xl:block w-72 shrink-0">
-		<div class="sticky top-4 bg-white border border-slate-200 rounded-xl p-5 shadow-sm">
+		<div class="sticky top-4 bg-white rounded-xl pt-2 pb-0 px-3">
 			<?php if (is_active_sidebar('sidebar-right')) : ?>
 				<?php dynamic_sidebar('sidebar-right'); ?>
 			<?php endif; ?>
@@ -250,7 +250,7 @@ get_header();
 				$hse_posts = get_posts(array('cat' => $hse_cat->term_id, 'posts_per_page' => -1, 'orderby' => 'title', 'order' => 'ASC', 'no_found_rows' => true));
 				if ($hse_posts) :
 			?>
-			<div class="pt-4 border-t border-slate-200 mt-4">
+			<div class="pt-1 mt-0">
 				<h3 class="text-xs font-semibold uppercase tracking-wider text-slate-400 mb-3"><?php echo esc_html($hse_cat->name); ?></h3>
 				<div class="space-y-1">
 					<?php foreach ($hse_posts as $p) : ?>
