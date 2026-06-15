@@ -12,17 +12,9 @@
 			<div class="grid sm:grid-cols-2 gap-8">
 				<!-- Brand -->
 				<div class="lg:col-span-1">
-					<div class="flex items-center gap-2.5 mb-3">
-						<svg class="w-8 h-8" viewBox="0 0 58 52" fill="none" aria-hidden="true">
-							<path d="M26.7 4.5L3 47.5h18.2L35.5 20.9 26.7 4.5z" fill="#0067B1"/>
-							<path d="M39.2 9.6L23.8 47.5h18.7L55 47.2 39.2 9.6z" fill="#003E7E"/>
-							<path d="M36.2 30.5l-7.8 17h13.9l10.8-.2-16.9-16.8z" fill="#10A4C4"/>
-							<path d="M25.6 30.8H10.9l-9 16.7h18.7l5-16.7z" fill="#0B79BD"/>
-						</svg>
-						<a href="<?php echo esc_url(home_url('/')); ?>" class="font-bold text-base text-white no-underline hover:text-amber-400 transition-colors">
-							<?php echo esc_html(get_theme_mod('pst_initials', 'PST')); ?><span class="text-amber-400"> <?php echo esc_html(get_theme_mod('pst_tagline', 'Hebat')); ?></span>
-						</a>
-						<span class="text-slate-500 text-sm ml-1">/ <?php echo esc_html(get_theme_mod('mhu_initials', 'MHU')); ?></span>
+					<div class="flex items-center gap-4 mb-3">
+						<img src="<?php echo get_template_directory_uri(); ?>/assets/logo-pst.png" alt="PST Hebat" class="h-10 w-auto">
+						<img src="<?php echo get_template_directory_uri(); ?>/assets/pst-2.png" alt="PST" class="h-10 w-auto">
 					</div>
 					<p class="text-sm text-slate-400 leading-relaxed max-w-xs">
 						<?php echo esc_html(get_theme_mod('footer_description', 'Mining document library — technical reports, standards, regulations, and safety guidelines for the mining and energy industry.')); ?>

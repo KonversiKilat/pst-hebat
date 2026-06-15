@@ -28,10 +28,7 @@ get_header();
 					<?php esc_html_e('All Documents', 'pst_hebat'); ?>
 				</a>
 				<?php
-				$industry_cats = array();
-				if ($doc_parent) {
-					$industry_cats = get_categories(array('child_of' => $doc_parent->term_id, 'hide_empty' => false));
-				}
+				$industry_cats = pst_hebat_sorted_document_cats();
 				foreach ($industry_cats as $cat) :
 				?>
 				<a href="<?php echo esc_url(get_category_link($cat)); ?>" data-cat="<?php echo esc_attr($cat->slug); ?>" class="w-full text-left px-3 py-2 rounded-lg text-sm text-slate-500 hover:text-slate-700 hover:bg-slate-100 border border-transparent transition no-underline block">

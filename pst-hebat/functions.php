@@ -990,3 +990,252 @@ function pst_hebat_sidebar_page_group($parent_id, $title) {
 	</div>
 	<?php
 }
+
+/**
+ * =============================================
+ * CUSTOM REDIRECTS — WP-Admin managed URL redirects
+ * Manage via: WP Admin > PST Hebat > Redirects
+ * =============================================
+ */
+
+/** Get redirect rules from DB option */
+function pst_hebat_get_redirects() {
+	$saved = get_option('pst_hebat_redirects', array());
+	return is_array($saved) ? $saved : array();
+}
+
+/** Perform redirects on frontend */
+function pst_hebat_custom_redirects() {
+	$request = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+
+	// 1. Manual redirects from DB (admin-managed)
+	$redirects = pst_hebat_get_redirects();
+	if (isset($redirects[$request])) {
+		wp_redirect(home_url($redirects[$request]), 301);
+		exit;
+	}
+
+	// 2. Auto-redirect: sub-category under Documents → first post (by doc order)
+	if (preg_match('#^/category/documents/([^/]+)/?$#', $request, $m)) {
+		$cat = get_category_by_slug($m[1]);
+		if ($cat && $cat->parent) {
+			$doc_parent = get_category_by_slug('documents');
+			if ($doc_parent && $cat->parent === $doc_parent->term_id) {
+				$posts = get_posts(array(
+					'post_type'      => 'post',
+					'posts_per_page' => -1,
+					'post_status'    => 'publish',
+					'cat'            => $cat->term_id,
+					'orderby'        => 'title',
+					'order'          => 'ASC',
+					'no_found_rows'  => true,
+				));
+				if (!empty($posts)) {
+					usort($posts, function($a, $b) {
+						$oa = (int) get_post_meta($a->ID, '_pst_hebat_doc_order', true);
+						$ob = (int) get_post_meta($b->ID, '_pst_hebat_doc_order', true);
+						if ($oa === $ob) return strcmp($a->post_title, $b->post_title);
+						return $oa - $ob;
+					});
+					wp_redirect(get_permalink($posts[0]->ID), 301);
+					exit;
+				}
+			}
+		}
+	}
+}
+add_action('template_redirect', 'pst_hebat_custom_redirects');
+
+/** Add admin menu page */
+function pst_hebat_admin_menu() {
+	add_submenu_page(
+		'themes.php',
+		'Redirect Rules',
+		'Redirects',
+		'manage_options',
+		'pst-hebat-redirects',
+		'pst_hebat_redirects_page'
+	);
+}
+add_action('admin_menu', 'pst_hebat_admin_menu');
+
+/** Render redirects admin page */
+function pst_hebat_redirects_page() {
+	if (!current_user_can('manage_options')) return;
+
+	/* Save */
+	if (isset($_POST['pst_hebat_save_redirects']) && wp_verify_nonce($_POST['_wpnonce'], 'pst_hebat_redirects')) {
+		$new = array();
+		if (!empty($_POST['old_url']) && is_array($_POST['old_url'])) {
+			foreach ($_POST['old_url'] as $i => $old) {
+				$old = trim($old);
+				$new_url = isset($_POST['new_url'][$i]) ? trim($_POST['new_url'][$i]) : '';
+				if ($old && $new_url) {
+					$new[$old] = $new_url;
+				}
+			}
+		}
+		update_option('pst_hebat_redirects', $new);
+		echo '<div class="notice notice-success is-dismissible"><p>Redirect rules saved.</p></div>';
+	}
+
+	$redirects = pst_hebat_get_redirects();
+?>
+<div class="wrap">
+	<h1>Redirect Rules</h1>
+	<p>Set custom 301 redirects. Old URL (path only) â†’ New URL (path only).</p>
+	<form method="post">
+		<?php wp_nonce_field('pst_hebat_redirects'); ?>
+		<table class="widefat striped" style="max-width:800px">
+			<thead>
+				<tr>
+					<th style="width:40%">Old URL (path)</th>
+					<th style="width:40%">New URL (path)</th>
+					<th style="width:20%">Actions</th>
+				</tr>
+			</thead>
+			<tbody id="redirect-rows">
+				<?php if (!empty($redirects)) : ?>
+					<?php foreach ($redirects as $old => $new) : ?>
+					<tr>
+						<td><input type="text" name="old_url[]" value="<?php echo esc_attr($old); ?>" class="widefat" placeholder="/old-path/"></td>
+						<td><input type="text" name="new_url[]" value="<?php echo esc_attr($new); ?>" class="widefat" placeholder="/new-path/"></td>
+						<td><button type="button" class="button remove-row">Remove</button></td>
+					</tr>
+					<?php endforeach; ?>
+				<?php else : ?>
+					<tr>
+						<td><input type="text" name="old_url[]" value="" class="widefat" placeholder="/old-path/"></td>
+						<td><input type="text" name="new_url[]" value="" class="widefat" placeholder="/new-path/"></td>
+						<td><button type="button" class="button remove-row">Remove</button></td>
+					</tr>
+				<?php endif; ?>
+			</tbody>
+		</table>
+		<p>
+			<button type="button" class="button" id="add-row">+ Add Rule</button>
+		</p>
+		<p class="submit">
+			<button type="submit" name="pst_hebat_save_redirects" class="button button-primary">Save Redirects</button>
+		</p>
+	</form>
+</div>
+<script>
+(function() {
+	var tbody = document.getElementById('redirect-rows');
+	document.getElementById('add-row').addEventListener('click', function() {
+		var tr = document.createElement('tr');
+		tr.innerHTML = '<td><input type="text" name="old_url[]" value="" class="widefat" placeholder="/old-path/"></td>' +
+			'<td><input type="text" name="new_url[]" value="" class="widefat" placeholder="/new-path/"></td>' +
+			'<td><button type="button" class="button remove-row">Remove</button></td>';
+		tbody.appendChild(tr);
+		tr.querySelector('.remove-row').addEventListener('click', function() { tr.remove(); });
+	});
+	tbody.addEventListener('click', function(e) {
+		if (e.target.classList.contains('remove-row')) {
+			e.target.closest('tr').remove();
+		}
+	});
+})();
+</script>
+<?php
+}
+
+/**
+ * =============================================
+ * DOCUMENT ORDER — Custom order for document posts
+ * Add "Document Order" meta box to post editor
+ * =============================================
+ */
+
+/** Add meta box for document order */
+function pst_hebat_add_doc_order_meta_box() {
+	add_meta_box(
+		'pst_hebat_doc_order',
+		'Document Order',
+		'pst_hebat_doc_order_callback',
+		'post',
+		'side',
+		'default'
+	);
+}
+add_action('add_meta_boxes', 'pst_hebat_add_doc_order_meta_box');
+
+function pst_hebat_doc_order_callback($post) {
+	wp_nonce_field('pst_hebat_doc_order_save', 'pst_hebat_doc_order_nonce');
+	$order = get_post_meta($post->ID, '_pst_hebat_doc_order', true);
+?>
+<p>
+	<label for="pst-hebat-doc-order">Order position (lower = first):</label>
+	<input type="number" id="pst-hebat-doc-order" name="pst_hebat_doc_order" value="<?php echo esc_attr($order !== '' ? $order : '0'); ?>" min="0" step="1" style="width:100%;margin-top:4px;">
+</p>
+<p class="description">Set the display order for this document in category lists and sidebar.</p>
+<?php
+}
+
+function pst_hebat_save_doc_order($post_id) {
+	if (!isset($_POST['pst_hebat_doc_order_nonce']) || !wp_verify_nonce($_POST['pst_hebat_doc_order_nonce'], 'pst_hebat_doc_order_save')) return;
+	if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) return;
+	if (!current_user_can('edit_post', $post_id)) return;
+
+	if (isset($_POST['pst_hebat_doc_order'])) {
+		$order = intval($_POST['pst_hebat_doc_order']);
+		update_post_meta($post_id, '_pst_hebat_doc_order', $order);
+	}
+}
+add_action('save_post', 'pst_hebat_save_doc_order');
+
+/** Get Documents sub-categories sorted by SMKP order */
+function pst_hebat_sorted_document_cats() {
+	$doc_parent = get_category_by_slug('documents');
+	if (!$doc_parent) return array();
+
+	$cats = get_categories(array(
+		'child_of' => $doc_parent->term_id,
+		'hide_empty' => false,
+	));
+
+	$order = array(
+		'kebijakan'              => 1,
+		'perencanaan'            => 2,
+		'organisasi-dan-personil' => 3,
+		'implementasi'           => 4,
+		'evaluasi-dan-tindak-lanjut' => 5,
+		'dokumentasi'            => 6,
+		'tinjauan-manajemen'     => 7,
+	);
+
+	usort($cats, function($a, $b) use ($order) {
+		$oa = isset($order[$a->slug]) ? $order[$a->slug] : 999;
+		$ob = isset($order[$b->slug]) ? $order[$b->slug] : 999;
+		return $oa - $ob;
+	});
+
+	return $cats;
+}
+
+/** Helper: get document WP_Query args with custom ordering */
+function pst_hebat_doc_query_args($cat_id = null) {
+	$args = array(
+		'post_type'      => 'post',
+		'posts_per_page' => -1,
+		'post_status'    => 'publish',
+		'orderby'        => 'title',
+		'order'          => 'ASC',
+		'pst_hebat_order' => true,
+	);
+	if ($cat_id) {
+		$args['cat'] = $cat_id;
+	}
+	return $args;
+}
+
+/** Apply custom document order: meta_value (0 if missing), then title */
+function pst_hebat_posts_orderby($orderby, $query) {
+	if (!empty($query->get('pst_hebat_order'))) {
+		global $wpdb;
+		$orderby = "COALESCE((SELECT meta_value+0 FROM {$wpdb->postmeta} WHERE post_id = {$wpdb->posts}.ID AND meta_key = '_pst_hebat_doc_order'), 999999) ASC, {$wpdb->posts}.post_title ASC";
+	}
+	return $orderby;
+}
+add_filter('posts_orderby', 'pst_hebat_posts_orderby', 10, 2);

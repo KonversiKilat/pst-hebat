@@ -38,16 +38,7 @@ while (have_posts()) : the_post();
 	if (!$sub_cat && !empty($cats)) $sub_cat = $cats[0];
 
 	/* Query sibling posts in same sub-category */
-	$sibling_args = array(
-		'post_type'      => 'post',
-		'posts_per_page' => -1,
-		'orderby'        => 'title',
-		'order'          => 'ASC',
-		'post_status'    => 'publish',
-	);
-	if ($sub_cat) {
-		$sibling_args['cat'] = $sub_cat->term_id;
-	}
+	$sibling_args = pst_hebat_doc_query_args($sub_cat ? $sub_cat->term_id : null);
 	$siblings = new WP_Query($sibling_args);
 	$sis_total = $siblings->found_posts;
 ?>
